@@ -46,10 +46,22 @@
 @property (weak, nonatomic, readonly) JSQMessagesInputToolbar *inputToolbar;
 
 /**
- *  The name of the user sending messages. This value must not be `nil`. 
- *  The default value is `@"JSQDefaultSender"`.
+ *  The display name of the current user who is sending messages.
+ *  This value does not have to be unique.
+ *
+ *  @discussion This value must not be `nil`. The default value is `@"JSQDefaultSender"`.
  */
-@property (copy, nonatomic) NSString *sender;
+@property (copy, nonatomic) NSString *senderDisplayName;
+
+/**
+ *  The string identifier that uniquely identifies the current user sending messages.
+ *  
+ *  @discussion This property is used to determine if a message is incoming or outgoing.
+ *  All message data objects returned by `collectionView:messageDataForItemAtIndexPath:` are
+ *  checked against this identifier.
+ *  This value must not be `nil`. The default value is `@"JSQDefaultSender"`.
+ */
+@property (copy, nonatomic) NSString *senderId;
 
 /**
  *  Specifies whether or not the view controller should automatically scroll to the most recent message 
@@ -91,15 +103,6 @@
  *  including `collectionView:cellForItemAtIndexPath:`.
  */
 @property (copy, nonatomic) NSString *incomingCellIdentifier;
-
-/**
- *  The color for the typing indicator for incoming messages.
- *
- *  @discussion The color specified is used for the typing indicator bubble image color.
- *  This color is then slightly darkened and used to color the typing indicator ellipsis.
- *  The default value is the light gray color value return by `[UIColor jsq_messageBubbleLightGrayColor]`.
- */
-@property (strong, nonatomic) UIColor *typingIndicatorColor;
 
 /**
  *  Specifies whether or not the view controller should show the typing indicator for an incoming message.
@@ -151,14 +154,16 @@
  *  This method is called when the user taps the send button on the inputToolbar
  *  after composing a message with the specified data.
  *
- *  @param button The send button that was pressed by the user.
- *  @param text   The message text.
- *  @param sender The message sender.
- *  @param date   The message date.
+ *  @param button            The send button that was pressed by the user.
+ *  @param text              The message text.
+ *  @param senderId          The message sender identifier.
+ *  @param senderDisplayName The message sender display name.
+ *  @param date              The message date.
  */
 - (void)didPressSendButton:(UIButton *)button
            withMessageText:(NSString *)text
-                    sender:(NSString *)sender
+                  senderId:(NSString *)senderId
+         senderDisplayName:(NSString *)senderDisplayName
                       date:(NSDate *)date;
 
 /**
