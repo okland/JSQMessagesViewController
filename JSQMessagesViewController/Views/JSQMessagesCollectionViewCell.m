@@ -27,6 +27,14 @@
 
 @interface JSQMessagesCollectionViewCell ()
 
+
+/**
+ *  My custom message status handlers
+ */
+@property (weak, nonatomic) IBOutlet UIImageView *greenV1;
+@property (weak, nonatomic) IBOutlet UIImageView *greenV2;
+@property (weak, nonatomic) IBOutlet UIImageView *imError;
+
 @property (weak, nonatomic) IBOutlet JSQMessagesLabel *cellTopLabel;
 @property (weak, nonatomic) IBOutlet JSQMessagesLabel *messageBubbleTopLabel;
 @property (weak, nonatomic) IBOutlet JSQMessagesLabel *cellBottomLabel;
@@ -212,6 +220,39 @@
     [super setBounds:bounds];
     self.contentView.frame = bounds;
 }
+
+
+#pragma mark - Message Status
+
+- (void)updateMessageStatus:(NSInteger)status {
+    switch (status) {
+            // Sent succesfully
+        case 1:
+            [[self greenV1] setHidden:FALSE];
+            [[self greenV2] setHidden:TRUE];
+            [[self imError] setHidden:TRUE];
+            break;
+            // Received
+        case 2:
+            [[self greenV1] setHidden:FALSE];
+            [[self greenV2] setHidden:FALSE];
+            [[self imError] setHidden:TRUE];
+            break;
+            // Error sending
+        case 3:
+            [[self greenV1] setHidden:TRUE];
+            [[self greenV2] setHidden:TRUE];
+            [[self imError] setHidden:FALSE];
+            break;
+            // HideAll
+        default:
+            [[self greenV1] setHidden:TRUE];
+            [[self greenV2] setHidden:TRUE];
+            [[self imError] setHidden:TRUE];
+            break;
+    }
+}
+
 
 #pragma mark - Setters
 

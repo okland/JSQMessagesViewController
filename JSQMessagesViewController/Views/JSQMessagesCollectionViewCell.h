@@ -160,4 +160,9 @@
  */
 + (NSString *)cellReuseIdentifier;
 
+
+/**
+ * Update message status based on Enum
+ */
+- (void)updateMessageStatus:(NSInteger)status;
 @end
