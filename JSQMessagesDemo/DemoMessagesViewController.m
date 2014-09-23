@@ -288,7 +288,7 @@
 
 - (NSAttributedString *)collectionView:(JSQMessagesCollectionView *)collectionView attributedTextForCellBottomLabelAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    return [[NSAttributedString alloc] initWithString:@"10:20"];
 }
 
 #pragma mark - UICollectionView DataSource
@@ -334,6 +334,9 @@
                                               NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid) };
     }
     
+
+    //add status
+    [cell updateMessageStatus:indexPath.item % 4];
     return cell;
 }
 
@@ -387,7 +390,7 @@
 - (CGFloat)collectionView:(JSQMessagesCollectionView *)collectionView
                    layout:(JSQMessagesCollectionViewFlowLayout *)collectionViewLayout heightForCellBottomLabelAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 0.0f;
+    return 16.4f;
 }
 
 #pragma mark - Responding to collection view tap events
