@@ -16,10 +16,10 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-#import "JSQDemoViewController.h"
+#import "DemoMessagesViewController.h"
 
 
-@implementation JSQDemoViewController
+@implementation DemoMessagesViewController
 
 #pragma mark - View lifecycle
 
@@ -42,7 +42,7 @@
     
     self.senderDisplayName = kJSQDemoAvatarDisplayNameSquires;
     
-    self.demoData = [[JSQDemoModelData alloc] init];
+    self.demoData = [[DemoModelData alloc] init];
     
     /**
      *  Remove camera button since media messages are not yet implemented
@@ -104,13 +104,12 @@
      */
     [self scrollToBottomAnimated:YES];
     
-    
     JSQMessage *copyMessage = [[self.demoData.messages lastObject] copy];
     
     if (!copyMessage) {
-        copyMessage = [JSQMessage messageWithText:@"First received!"
-                                         senderId:kJSQDemoAvatarIdJobs
-                                senderDisplayName:kJSQDemoAvatarDisplayNameJobs];
+        copyMessage = [JSQTextMessage messageWithSenderId:kJSQDemoAvatarIdJobs
+                                              displayName:kJSQDemoAvatarDisplayNameJobs
+                                                     text:@"First received!"];
     }
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -119,9 +118,18 @@
         [userIds removeObject:self.senderId];
         NSString *userId = userIds[arc4random_uniform((int)[userIds count])];
         
-        JSQMessage *newMessage = [JSQMessage messageWithText:copyMessage.text
-                                                    senderId:userId
-                                           senderDisplayName:self.demoData.users[userId]];
+        JSQMessage *newMessage = nil;
+        
+        if ([copyMessage isKindOfClass:[JSQTextMessage class]]) {
+            newMessage = [JSQTextMessage messageWithSenderId:userId
+                                                 displayName:self.demoData.users[userId]
+                                                        text:copyMessage.text];
+        }
+        else if ([copyMessage isKindOfClass:[JSQMediaMessage class]]) {
+            newMessage = [JSQMediaMessage messageWithSenderId:userId
+                                                  displayName:self.demoData.users[userId]
+                                                        media:copyMessage.media];
+        }
         
         /**
          *  This you should do upon receiving a message:
@@ -161,22 +169,27 @@
      */
     [JSQSystemSoundPlayer jsq_playMessageSentSound];
     
-    JSQMessage *message = [[JSQMessage alloc] initWithText:text
-                                                  senderId:senderId
-                                         senderDisplayName:senderDisplayName
-                                                      date:date];
+    JSQTextMessage *message = [[JSQTextMessage alloc] initWithSenderId:senderId
+                                                     senderDisplayName:senderDisplayName
+                                                                  date:date
+                                                                  text:text];
     
     [self.demoData.messages addObject:message];
-    
     [self finishSendingMessage];
 }
 
 - (void)didPressAccessoryButton:(UIButton *)sender
 {
-    NSLog(@"Camera pressed!");
-    /**
-     *  Accessory button has no default functionality, yet.
-     */
+    // TODO: temporary send photo, make this better, add async loading demo
+    JSQPhotoMediaItem *photoItem = [[JSQPhotoMediaItem alloc] initWithImage:[UIImage imageNamed:@"goldengate"]];
+    JSQMediaMessage *mediaMessage = [JSQMediaMessage messageWithSenderId:kJSQDemoAvatarIdSquires
+                                                             displayName:kJSQDemoAvatarDisplayNameSquires
+                                                                   media:photoItem];
+    
+    [self.demoData.messages addObject:mediaMessage];
+    
+    [JSQSystemSoundPlayer jsq_playMessageSentSound];
+    [self finishSendingMessage];
 }
 
 
@@ -308,15 +321,18 @@
     
     JSQMessage *msg = [self.demoData.messages objectAtIndex:indexPath.item];
     
-    if ([msg.senderId isEqualToString:self.senderId]) {
-        cell.textView.textColor = [UIColor blackColor];
+    if ([msg isKindOfClass:[JSQTextMessage class]]) {
+        
+        if ([msg.senderId isEqualToString:self.senderId]) {
+            cell.textView.textColor = [UIColor blackColor];
+        }
+        else {
+            cell.textView.textColor = [UIColor whiteColor];
+        }
+        
+        cell.textView.linkTextAttributes = @{ NSForegroundColorAttributeName : cell.textView.textColor,
+                                              NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid) };
     }
-    else {
-        cell.textView.textColor = [UIColor whiteColor];
-    }
-    
-    cell.textView.linkTextAttributes = @{ NSForegroundColorAttributeName : cell.textView.textColor,
-                                          NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid) };
     
     return cell;
 }

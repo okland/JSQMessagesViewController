@@ -134,8 +134,11 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     self.automaticallyScrollsToMostRecentMessage = YES;
     
     self.outgoingCellIdentifier = [JSQMessagesCollectionViewCellOutgoing cellReuseIdentifier];
+    self.outgoingMediaCellIdentifier = [JSQMessagesCollectionViewCellOutgoing mediaCellReuseIdentifier];
+    
     self.incomingCellIdentifier = [JSQMessagesCollectionViewCellIncoming cellReuseIdentifier];
-
+    self.incomingMediaCellIdentifier = [JSQMessagesCollectionViewCellIncoming mediaCellReuseIdentifier];
+    
     self.showTypingIndicator = NO;
     
     self.showLoadEarlierMessagesHeader = NO;
@@ -391,58 +394,79 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
 
 - (UICollectionViewCell *)collectionView:(JSQMessagesCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<JSQMessageData> messageData = [collectionView.dataSource collectionView:collectionView messageDataForItemAtIndexPath:indexPath];
-    NSParameterAssert(messageData != nil);
+    id<JSQMessageData> messageItem = [collectionView.dataSource collectionView:collectionView messageDataForItemAtIndexPath:indexPath];
+    NSParameterAssert(messageItem != nil);
     
-    NSString *messageSenderId = [messageData senderId];
+    NSString *messageSenderId = [messageItem senderId];
     NSParameterAssert(messageSenderId != nil);
     
-    NSString *messageSenderDisplayName = [messageData senderDisplayName];
+    NSString *messageSenderDisplayName = [messageItem senderDisplayName];
     NSParameterAssert(messageSenderDisplayName != nil);
     
-    NSString *messageText = [messageData text];
-    NSParameterAssert(messageText != nil);
+    NSString *messageText = nil;
+    id<JSQMessageMediaData> messageMedia = nil;
     
-    BOOL isOutgoingMessage = [messageSenderId isEqualToString:self.senderId];
-    
-    NSString *cellIdentifier = isOutgoingMessage ? self.outgoingCellIdentifier : self.incomingCellIdentifier;
-    JSQMessagesCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    cell.delegate = collectionView;
-    cell.textView.text = messageText;
-    
-    id<JSQMessageBubbleImageDataSource> bubbleImageDataSource = [collectionView.dataSource collectionView:collectionView messageBubbleImageDataForItemAtIndexPath:indexPath];
-    if (bubbleImageDataSource != nil) {
-        cell.messageBubbleImageView.image = [bubbleImageDataSource messageBubbleImage];
-        cell.messageBubbleImageView.highlightedImage = [bubbleImageDataSource messageBubbleHighlightedImage];
+    if ([messageItem respondsToSelector:@selector(text)]) {
+        messageText = [messageItem text];
+        NSParameterAssert(messageText != nil);
+    }
+    else if ([messageItem respondsToSelector:@selector(media)]) {
+        messageMedia = [messageItem media];
+        NSParameterAssert(messageMedia != nil);
     }
     
-    id<JSQMessageAvatarImageDataSource> avatarImageDataSource = [collectionView.dataSource collectionView:collectionView avatarImageDataForItemAtIndexPath:indexPath];
-    if (avatarImageDataSource != nil) {
-        UIImage *avatarImage = [avatarImageDataSource avatarImage];
-        cell.avatarImageView.image = (avatarImage == nil) ? [avatarImageDataSource avatarPlaceholderImage] : avatarImage;
-        cell.avatarImageView.highlightedImage = [avatarImageDataSource avatarHighlightedImage];
+    BOOL isOutgoingMessage = [messageSenderId isEqualToString:self.senderId];
+    BOOL isMediaMessage = (messageMedia != nil);
+    
+    NSString *cellIdentifier = nil;
+    if (isMediaMessage) {
+        cellIdentifier = isOutgoingMessage ? self.outgoingMediaCellIdentifier : self.incomingMediaCellIdentifier;
+    }
+    else {
+        cellIdentifier = isOutgoingMessage ? self.outgoingCellIdentifier : self.incomingCellIdentifier;
+    }
+    
+    JSQMessagesCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    cell.delegate = collectionView;
+    
+    if (!isMediaMessage) {
+        cell.textView.text = messageText;
+        
+        id<JSQMessageBubbleImageDataSource> bubbleImageDataSource = [collectionView.dataSource collectionView:collectionView messageBubbleImageDataForItemAtIndexPath:indexPath];
+        if (bubbleImageDataSource != nil) {
+            cell.messageBubbleImageView.image = [bubbleImageDataSource messageBubbleImage];
+            cell.messageBubbleImageView.highlightedImage = [bubbleImageDataSource messageBubbleHighlightedImage];
+        }
+    }
+    else {
+        cell.mediaView = [messageMedia mediaView] ?: [messageMedia mediaPlaceholderView];
+        NSParameterAssert(cell.mediaView != nil);
+    }
+    
+    BOOL needsAvatar = YES;
+    if (isOutgoingMessage && CGSizeEqualToSize(collectionView.collectionViewLayout.outgoingAvatarViewSize, CGSizeZero)) {
+        needsAvatar = NO;
+    }
+    else if (!isOutgoingMessage && CGSizeEqualToSize(collectionView.collectionViewLayout.incomingAvatarViewSize, CGSizeZero)) {
+        needsAvatar = NO;
+    }
+    
+    id<JSQMessageAvatarImageDataSource> avatarImageDataSource = nil;
+    if (needsAvatar) {
+        avatarImageDataSource = [collectionView.dataSource collectionView:collectionView avatarImageDataForItemAtIndexPath:indexPath];
+        if (avatarImageDataSource != nil) {
+            cell.avatarImageView.image = [avatarImageDataSource avatarImage] ?: [avatarImageDataSource avatarPlaceholderImage];
+            cell.avatarImageView.highlightedImage = [avatarImageDataSource avatarHighlightedImage];
+        }
     }
     
     cell.cellTopLabel.attributedText = [collectionView.dataSource collectionView:collectionView attributedTextForCellTopLabelAtIndexPath:indexPath];
     cell.messageBubbleTopLabel.attributedText = [collectionView.dataSource collectionView:collectionView attributedTextForMessageBubbleTopLabelAtIndexPath:indexPath];
     cell.cellBottomLabel.attributedText = [collectionView.dataSource collectionView:collectionView attributedTextForCellBottomLabelAtIndexPath:indexPath];
     
-    if (isOutgoingMessage) {
-        cell.avatarImageView.bounds = CGRectMake(CGRectGetMinX(cell.avatarImageView.bounds),
-                                                 CGRectGetMinY(cell.avatarImageView.bounds),
-                                                 collectionView.collectionViewLayout.outgoingAvatarViewSize.width,
-                                                 collectionView.collectionViewLayout.outgoingAvatarViewSize.height);
-    }
-    else {
-        cell.avatarImageView.bounds = CGRectMake(CGRectGetMinX(cell.avatarImageView.bounds),
-                                                 CGRectGetMinY(cell.avatarImageView.bounds),
-                                                 collectionView.collectionViewLayout.incomingAvatarViewSize.width,
-                                                 collectionView.collectionViewLayout.incomingAvatarViewSize.height);
-    }
-    
     cell.backgroundColor = [UIColor clearColor];
     
-    CGFloat bubbleTopLabelInset = 60.0f;
+    CGFloat bubbleTopLabelInset = (avatarImageDataSource != nil) ? 60.0f : 15.0f;
     
     if (isOutgoingMessage) {
         cell.messageBubbleTopLabel.textInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, bubbleTopLabelInset);
@@ -492,8 +516,14 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
 
 #pragma mark - Collection view delegate
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)collectionView:(JSQMessagesCollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    //  disable menu for media messages
+    id<JSQMessageData> messageItem = [collectionView.dataSource collectionView:collectionView messageDataForItemAtIndexPath:indexPath];
+    if ([messageItem respondsToSelector:@selector(media)]) {
+        return NO;
+    }
+    
     self.selectedIndexPathForMenu = indexPath;
     
     //  textviews are selectable to allow data detectors

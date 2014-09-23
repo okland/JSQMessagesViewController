@@ -87,7 +87,7 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault;
  *  The font used to display the body a text message in the message bubble of each 
  *  `JSQMessagesCollectionViewCell` in the collectionView. 
  *  
- *  @discussion The default value is the system font at size `15.0f`. This value must not be `nil`.
+ *  @discussion The default value is the preferred system font for `UIFontTextStyleBody`. This value must not be `nil`.
  */
 @property (strong, nonatomic) UIFont *messageBubbleFont;
 
@@ -98,7 +98,7 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault;
  *  This value specifies the horizontal spacing between the `messageBubbleContainerView` and
  *  the edge of the collection view cell in which it is displayed. That is, the edge that is opposite the avatar image.
  *
- *  @discussion The default value is `40.0f`. This value must be positive.
+ *  @discussion The default value is `40.0f` on iPhone and `240.0f` on iPad. This value must be positive.
  *  For *outgoing* messages, this value specifies the amount of spacing from the left most 
  *  edge of the collectionView to the left most edge of a message bubble within a cell.
  *
@@ -129,7 +129,7 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault;
  *
  *  4. The bottom value insets the bottom of the frame.
  *
- *  @discussion The default value is `(0.0f, 0.0f, 0.0f, 6.0f)`.
+ *  @discussion The default value is `{0.0f, 0.0f, 0.0f, 6.0f}`.
  *
  *  @warning Adjusting this value is an advanced endeavour and not recommended. 
  *  You will only need to adjust this value should you choose to provide your own bubble image assets.
@@ -142,7 +142,7 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault;
  *  The inset of the text container's layout area within the text view's content area in each `JSQMessagesCollectionViewCell`. 
  *  The specified inset values should be positive.
  *
- *  @discussion The default value is `(10.0f, 8.0f, 10.0f, 8.0f)`.
+ *  @discussion The default value is `{7.0f, 14.0f, 7.0f, 14.0f}`.
  *
  *  @warning Adjusting this value is an advanced endeavour and not recommended. 
  *  You will only need to adjust this value should you choose to provide your own bubble image assets.
@@ -154,7 +154,7 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault;
 /**
  *  The size of the avatar image view for incoming messages.
  *
- *  @discussion The default value is `(34.0f, 34.0f)`. Set to `CGSizeZero` to remove incoming avatars.
+ *  @discussion The default value is `(30.0f, 30.0f)`. Set to `CGSizeZero` to remove incoming avatars.
  *  You may use `kJSQMessagesCollectionViewAvatarSizeDefault` to size your avatars to the default value.
  */
 @property (assign, nonatomic) CGSize incomingAvatarViewSize;
@@ -162,7 +162,7 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault;
 /**
  *  The size of the avatar image view for outgoing messages.
  *
- *  @discussion The default value is `(34.0f, 34.0f)`. Set to `CGSizeZero` to remove outgoing avatars.
+ *  @discussion The default value is `(30.0f, 30.0f)`. Set to `CGSizeZero` to remove outgoing avatars.
  *  You may use `kJSQMessagesCollectionViewAvatarSizeDefault` to size your avatars to the default value.
  */
 @property (assign, nonatomic) CGSize outgoingAvatarViewSize;

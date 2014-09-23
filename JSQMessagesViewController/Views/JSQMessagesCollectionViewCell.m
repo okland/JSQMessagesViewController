@@ -80,14 +80,17 @@
 
 + (UINib *)nib
 {
-    NSAssert(NO, @"ERROR: method must be overridden in subclasses: %s", __PRETTY_FUNCTION__);
-    return nil;
+    return [UINib nibWithNibName:NSStringFromClass([self class]) bundle:[NSBundle mainBundle]];
 }
 
 + (NSString *)cellReuseIdentifier
 {
-    NSAssert(NO, @"ERROR: method must be overridden in subclasses: %s", __PRETTY_FUNCTION__);
-    return nil;
+    return NSStringFromClass([self class]);
+}
+
++ (NSString *)mediaCellReuseIdentifier
+{
+    return [NSString stringWithFormat:@"%@_JSQMedia", NSStringFromClass([self class])];
 }
 
 #pragma mark - Initialization
@@ -127,6 +130,8 @@
     self.textView.contentInset = UIEdgeInsetsZero;
     self.textView.scrollIndicatorInsets = UIEdgeInsetsZero;
     self.textView.contentOffset = CGPointZero;
+    self.textView.textContainerInset = UIEdgeInsetsZero;
+    self.textView.textContainer.lineFragmentPadding = 0;
     self.textView.linkTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor],
                                           NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid) };
     
@@ -142,8 +147,11 @@
     _cellTopLabel = nil;
     _messageBubbleTopLabel = nil;
     _cellBottomLabel = nil;
+    
     _textView = nil;
     _messageBubbleImageView = nil;
+    _mediaView = nil;
+    
     _avatarImageView = nil;
     
     [_tapGestureRecognizer removeTarget:nil action:NULL];
@@ -159,6 +167,7 @@
     self.cellTopLabel.text = nil;
     self.messageBubbleTopLabel.text = nil;
     self.cellBottomLabel.text = nil;
+    
     self.textView.dataDetectorTypes = UIDataDetectorTypeNone;
     self.textView.text = nil;
     self.textView.attributedText = nil;
@@ -213,7 +222,7 @@
 }
 
 //  TODO: remove when fixed
-//        hack for Xcode6 / iOS 8 SDK rendering bug
+//        hack for Xcode6 / iOS 8 SDK rendering bug that occurs on iOS 7.x
 //        see issue #484
 //        https://github.com/jessesquires/JSQMessagesViewController/issues/484
 //
@@ -293,6 +302,28 @@
     [self jsq_updateConstraint:self.textViewBottomVerticalSpaceConstraint withConstant:textViewFrameInsets.bottom];
     [self jsq_updateConstraint:self.textViewAvatarHorizontalSpaceConstraint withConstant:textViewFrameInsets.right];
     [self jsq_updateConstraint:self.textViewMarginHorizontalSpaceConstraint withConstant:textViewFrameInsets.left];
+}
+
+- (void)setMediaView:(UIView *)mediaView
+{
+    if (mediaView == _mediaView) {
+        return;
+    }
+    
+    if (_mediaView) {
+        [_mediaView removeFromSuperview];
+        _mediaView = nil;
+    }
+    
+    [self.messageBubbleImageView removeFromSuperview];
+    [self.textView removeFromSuperview];
+    
+    mediaView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.messageBubbleContainerView addSubview:mediaView];
+    [self.messageBubbleContainerView jsq_pinAllEdgesOfSubview:mediaView];
+    [self setNeedsUpdateConstraints];
+    _mediaView = mediaView;
 }
 
 #pragma mark - Getters

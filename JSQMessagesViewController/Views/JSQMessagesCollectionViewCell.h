@@ -63,11 +63,14 @@
 
 
 /**
- *  The `JSQMessagesCollectionViewCell` is an abstract class that presents the content for a single message data item
- *  when that item is within the collection view’s visible bounds. The layout and presentation 
- *  of cells is managed by the collection view and its corresponding layout object.
+ *  The `JSQMessagesCollectionViewCell` is an abstract base class that presents the content for 
+ *  a single message data item when that item is within the collection view’s visible bounds. 
+ *  The layout and presentation of cells is managed by the collection view and its corresponding layout object.
  *
  *  @warning This class is intended to be subclassed. You should not use it directly.
+ *
+ *  @see JSQMessagesCollectionViewCellIncoming.
+ *  @see JSQMessagesCollectionViewCellOutgoing.
  */
 @interface JSQMessagesCollectionViewCell : UICollectionViewCell
 
@@ -96,11 +99,15 @@
 
 /**
  *  Returns the text view of the cell. This text view contains the message body text.
+ *
+ *  @warning If mediaView returns a non-nil view, then this value will be `nil`.
  */
 @property (weak, nonatomic, readonly) UITextView *textView;
 
 /**
- *  Returns the bubble image view of the cell that is responsible for displaying message bubble images.
+ *  Returns the bubble image view of the cell that is responsible for displaying message bubble images. 
+ *
+ *  @warning If mediaView returns a non-nil view, then this value will be `nil`.
  */
 @property (weak, nonatomic, readonly) UIImageView *messageBubbleImageView;
 
@@ -136,6 +143,13 @@
 @property (weak, nonatomic, readonly) UIView *avatarContainerView;
 
 /**
+ *  The media view of the cell. This view displays the contents of a media message.
+ *
+ *  @warning If this value is non-nil, then textView and messageBubbleImageView will both be `nil`.
+ */
+@property (weak, nonatomic) UIView *mediaView;
+
+/**
  *  Returns the underlying gesture recognizer for tap gestures in the avatarImageView of the cell.
  *  This gesture handles the tap event for the avatarImageView and notifies the cell's delegate.
  */
@@ -152,15 +166,24 @@
 + (UINib *)nib;
 
 /**
- *  Returns the default string used to identify a reusable cell.
+ *  Returns the default string used to identify a reusable cell for text message items.
  *
  *  @return The string used to identify a reusable cell.
  */
 + (NSString *)cellReuseIdentifier;
 
 
+
 /**
- * Update message status based on Enum
+ *  Update message status based on Enum
  */
 - (void)updateMessageStatus:(NSInteger)status;
+
+/**
+ *  Returns the default string used to identify a reusable cell for media message items.
+ *
+ *  @return The string used to identify a reusable cell.
+ */
++ (NSString *)mediaCellReuseIdentifier;
+
 @end
