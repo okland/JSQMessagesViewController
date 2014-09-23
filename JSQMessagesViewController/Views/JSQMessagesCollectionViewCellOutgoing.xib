@@ -76,8 +76,8 @@
                             <constraint firstAttribute="trailing" secondItem="y9b-D9-Q7W" secondAttribute="trailing" id="w9X-3u-BNY"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="cell bottom label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Uc-dI-YDD" userLabel="Cell bottom label" customClass="JSQMessagesLabel">
-                        <rect key="frame" x="0.0" y="134" width="284" height="20"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="cell bottom label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Uc-dI-YDD" userLabel="Cell bottom label" customClass="JSQMessagesLabel">
+                        <rect key="frame" x="0.0" y="134" width="269" height="20"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="cPs-M4-tjX"/>
@@ -86,52 +86,49 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="greenV" translatesAutoresizingMaskIntoConstraints="NO" id="Q0I-6f-YdE">
-                        <rect key="frame" x="292" y="135" width="14" height="14"/>
-                        <accessibility key="accessibilityConfiguration">
-                            <accessibilityTraits key="traits" none="YES" image="YES" notEnabled="YES"/>
-                        </accessibility>
-                    </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="greenV" translatesAutoresizingMaskIntoConstraints="NO" id="blq-hV-Lex">
-                        <rect key="frame" x="302" y="136" width="14" height="14"/>
-                        <accessibility key="accessibilityConfiguration">
-                            <accessibilityTraits key="traits" none="YES" image="YES" notEnabled="YES"/>
-                        </accessibility>
-                    </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="imError" translatesAutoresizingMaskIntoConstraints="NO" id="V4A-3Y-P24">
-                        <rect key="frame" x="297" y="134" width="16" height="20"/>
-                    </imageView>
+                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H5o-gy-Jkl">
+                        <rect key="frame" x="293" y="134" width="20" height="20"/>
+                        <subviews>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" placeholderIntrinsicWidth="14" placeholderIntrinsicHeight="14" image="imError" translatesAutoresizingMaskIntoConstraints="NO" id="V4A-3Y-P24">
+                                <rect key="frame" x="3" y="0.0" width="14" height="14"/>
+                            </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" placeholderIntrinsicWidth="14" placeholderIntrinsicHeight="14" image="greenV" translatesAutoresizingMaskIntoConstraints="NO" id="Q0I-6f-YdE">
+                                <rect key="frame" x="2" y="-1" width="10" height="14"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" none="YES" image="YES" notEnabled="YES"/>
+                                </accessibility>
+                            </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="greenV" translatesAutoresizingMaskIntoConstraints="NO" id="blq-hV-Lex">
+                                <rect key="frame" x="8" y="1" width="10" height="10"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" none="YES" image="YES" notEnabled="YES"/>
+                                </accessibility>
+                            </imageView>
+                        </subviews>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
                 <constraint firstItem="2zh-vR-QJW" firstAttribute="top" secondItem="p52-YN-yLu" secondAttribute="bottom" id="3Wx-g0-fTc"/>
-                <constraint firstItem="V4A-3Y-P24" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7Uc-dI-YDD" secondAttribute="trailing" constant="10" id="6My-FB-WyX"/>
-                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="V4A-3Y-P24" secondAttribute="bottom" id="8gD-3M-glP"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="V4A-3Y-P24" secondAttribute="trailing" constant="10" id="AaO-Vc-Bxt"/>
                 <constraint firstAttribute="trailing" secondItem="jxM-YD-sVG" secondAttribute="trailing" id="AwY-g7-f1T"/>
-                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="blq-hV-Lex" secondAttribute="bottom" constant="3" id="CeO-MY-rV9"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="blq-hV-Lex" secondAttribute="trailing" constant="5" id="Gxf-WI-0A9"/>
+                <constraint firstItem="H5o-gy-Jkl" firstAttribute="top" secondItem="y9b-D9-Q7W" secondAttribute="bottom" id="FPW-Za-sX6"/>
                 <constraint firstItem="jxM-YD-sVG" firstAttribute="top" secondItem="23f-xH-rkY" secondAttribute="top" id="HYT-Tw-whz"/>
                 <constraint firstAttribute="trailing" secondItem="X89-B1-aAd" secondAttribute="trailing" id="KLt-Ix-wDa"/>
                 <constraint firstItem="7Uc-dI-YDD" firstAttribute="top" secondItem="2zh-vR-QJW" secondAttribute="bottom" id="Ngq-ew-t2K"/>
-                <constraint firstItem="blq-hV-Lex" firstAttribute="top" relation="greaterThanOrEqual" secondItem="y9b-D9-Q7W" secondAttribute="bottom" id="V3y-e4-qBV"/>
+                <constraint firstAttribute="trailing" secondItem="H5o-gy-Jkl" secondAttribute="trailing" constant="7" id="RMD-ov-FMf"/>
                 <constraint firstItem="p52-YN-yLu" firstAttribute="top" secondItem="jxM-YD-sVG" secondAttribute="bottom" id="WK3-Eh-gG8"/>
-                <constraint firstItem="Q0I-6f-YdE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="y9b-D9-Q7W" secondAttribute="bottom" id="Wof-DK-de3"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Q0I-6f-YdE" secondAttribute="trailing" constant="10" id="Z0I-Hx-hfr"/>
-                <constraint firstItem="V4A-3Y-P24" firstAttribute="top" relation="greaterThanOrEqual" secondItem="y9b-D9-Q7W" secondAttribute="bottom" id="fUA-AG-1aE"/>
                 <constraint firstItem="7Uc-dI-YDD" firstAttribute="leading" secondItem="23f-xH-rkY" secondAttribute="leading" id="fiS-g3-X16"/>
                 <constraint firstAttribute="bottom" secondItem="7Uc-dI-YDD" secondAttribute="bottom" id="gXo-9b-b1W"/>
                 <constraint firstAttribute="trailing" secondItem="p52-YN-yLu" secondAttribute="trailing" id="gen-N0-uZj"/>
-                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Q0I-6f-YdE" secondAttribute="bottom" constant="3" id="iAk-c6-wd7"/>
                 <constraint firstItem="7Uc-dI-YDD" firstAttribute="top" secondItem="X89-B1-aAd" secondAttribute="bottom" id="iiF-tn-5Ir"/>
                 <constraint firstItem="p52-YN-yLu" firstAttribute="top" secondItem="jxM-YD-sVG" secondAttribute="bottom" id="jBD-JV-AWk"/>
                 <constraint firstItem="jxM-YD-sVG" firstAttribute="leading" secondItem="23f-xH-rkY" secondAttribute="leading" id="qeB-G5-1Wq"/>
                 <constraint firstItem="p52-YN-yLu" firstAttribute="leading" secondItem="23f-xH-rkY" secondAttribute="leading" id="tTj-Mp-0va"/>
                 <constraint firstItem="2zh-vR-QJW" firstAttribute="leading" secondItem="23f-xH-rkY" secondAttribute="leading" constant="40" id="tya-FG-SP6"/>
+                <constraint firstAttribute="bottom" secondItem="H5o-gy-Jkl" secondAttribute="bottom" id="ugO-vA-hah"/>
                 <constraint firstItem="X89-B1-aAd" firstAttribute="leading" secondItem="2zh-vR-QJW" secondAttribute="trailing" constant="2" id="vMz-Yi-B0w"/>
-                <constraint firstItem="blq-hV-Lex" firstAttribute="leading" secondItem="7Uc-dI-YDD" secondAttribute="trailing" constant="19" id="ziL-mR-pia"/>
-                <constraint firstAttribute="trailing" secondItem="7Uc-dI-YDD" secondAttribute="trailing" constant="36" id="zlm-KS-MPK"/>
+                <constraint firstAttribute="trailing" secondItem="7Uc-dI-YDD" secondAttribute="trailing" constant="44" id="zlm-KS-MPK"/>
             </constraints>
             <size key="customSize" width="317" height="245"/>
             <connections>

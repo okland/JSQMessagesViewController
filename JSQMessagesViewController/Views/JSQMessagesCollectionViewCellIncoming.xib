@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1808" identifier="iOS"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
@@ -76,8 +76,8 @@
                             <constraint firstAttribute="height" constant="34" id="tZk-AK-JFa"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="cell bottom label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UPz-5x-c1T" userLabel="Cell bottom label" customClass="JSQMessagesLabel">
-                        <rect key="frame" x="33" y="134" width="287" height="20"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="cell bottom label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UPz-5x-c1T" userLabel="Cell bottom label" customClass="JSQMessagesLabel">
+                        <rect key="frame" x="49" y="134" width="271" height="20"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="xPR-Ph-Ze9"/>
@@ -89,29 +89,16 @@
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="greenV" translatesAutoresizingMaskIntoConstraints="NO" id="x7n-WP-Tbc">
                         <rect key="frame" x="13" y="174" width="12" height="4"/>
                     </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="imError" translatesAutoresizingMaskIntoConstraints="NO" id="xSy-Pa-Omp">
-                        <rect key="frame" x="10" y="138" width="10" height="10"/>
-                    </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="greenV" translatesAutoresizingMaskIntoConstraints="NO" id="vfe-aV-cGC">
-                        <rect key="frame" x="6" y="138" width="10" height="10"/>
-                    </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="greenV" translatesAutoresizingMaskIntoConstraints="NO" id="taP-3H-pAn">
-                        <rect key="frame" x="12" y="138" width="12" height="12"/>
-                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
                 <constraint firstItem="UPz-5x-c1T" firstAttribute="top" secondItem="Da1-09-wR4" secondAttribute="bottom" id="2FH-l9-EdC"/>
-                <constraint firstItem="vfe-aV-cGC" firstAttribute="leading" secondItem="4lh-CK-yVn" secondAttribute="leading" constant="6" id="K3c-rY-GL6"/>
                 <constraint firstAttribute="trailing" secondItem="afj-rd-iNv" secondAttribute="trailing" id="Ka4-Dy-jCS"/>
-                <constraint firstAttribute="bottom" secondItem="vfe-aV-cGC" secondAttribute="bottom" constant="4" id="MyX-ZG-CXu"/>
                 <constraint firstItem="afj-rd-iNv" firstAttribute="leading" secondItem="4lh-CK-yVn" secondAttribute="leading" id="OnD-mZ-QtR"/>
-                <constraint firstItem="taP-3H-pAn" firstAttribute="leading" secondItem="4lh-CK-yVn" secondAttribute="leading" constant="12" id="UUJ-zU-CUP"/>
+                <constraint firstItem="UPz-5x-c1T" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4lh-CK-yVn" secondAttribute="leading" constant="45" id="XAG-0n-jkJ"/>
                 <constraint firstItem="Ufa-bF-l1Y" firstAttribute="leading" secondItem="4lh-CK-yVn" secondAttribute="leading" id="Z5z-m3-8Ne"/>
                 <constraint firstItem="afj-rd-iNv" firstAttribute="top" secondItem="4lh-CK-yVn" secondAttribute="top" id="ZG9-2M-N52"/>
-                <constraint firstAttribute="bottom" secondItem="taP-3H-pAn" secondAttribute="bottom" constant="4" id="bkc-jU-Bd6"/>
-                <constraint firstAttribute="bottom" secondItem="xSy-Pa-Omp" secondAttribute="bottom" constant="5" id="c03-s0-U94"/>
                 <constraint firstAttribute="trailing" secondItem="Ufa-bF-l1Y" secondAttribute="trailing" id="cWQ-1Q-xOA"/>
                 <constraint firstItem="UPz-5x-c1T" firstAttribute="top" secondItem="Da1-09-wR4" secondAttribute="bottom" id="dDB-B0-c6J"/>
                 <constraint firstItem="Ufa-bF-l1Y" firstAttribute="top" secondItem="afj-rd-iNv" secondAttribute="bottom" id="i9Y-sV-v6b"/>
@@ -121,8 +108,6 @@
                 <constraint firstAttribute="trailing" secondItem="btS-p8-B7Z" secondAttribute="trailing" constant="40" id="k2n-jk-kOg"/>
                 <constraint firstAttribute="bottom" secondItem="UPz-5x-c1T" secondAttribute="bottom" id="nsK-Gh-M3Z"/>
                 <constraint firstItem="UPz-5x-c1T" firstAttribute="top" secondItem="btS-p8-B7Z" secondAttribute="bottom" id="s8G-Je-7GA"/>
-                <constraint firstItem="xSy-Pa-Omp" firstAttribute="leading" secondItem="4lh-CK-yVn" secondAttribute="leading" constant="10" id="uGy-eu-jCA"/>
-                <constraint firstItem="UPz-5x-c1T" firstAttribute="leading" secondItem="4lh-CK-yVn" secondAttribute="leading" constant="33" id="yMI-tj-F82"/>
             </constraints>
             <size key="customSize" width="317" height="245"/>
             <connections>
@@ -134,9 +119,6 @@
                 <outlet property="cellBottomLabelHeightConstraint" destination="xPR-Ph-Ze9" id="nvV-Tk-AIs"/>
                 <outlet property="cellTopLabel" destination="afj-rd-iNv" id="bTd-4q-U7e"/>
                 <outlet property="cellTopLabelHeightConstraint" destination="fKS-MR-YPI" id="YWd-Rd-qSL"/>
-                <outlet property="greenV1" destination="xSy-Pa-Omp" id="4ps-8Y-c77"/>
-                <outlet property="greenV2" destination="xSy-Pa-Omp" id="82B-Zm-Tia"/>
-                <outlet property="imError" destination="xSy-Pa-Omp" id="XqT-P6-700"/>
                 <outlet property="messageBubbleContainerView" destination="btS-p8-B7Z" id="2sk-5p-NEd"/>
                 <outlet property="messageBubbleImageView" destination="OCS-Fu-acq" id="OuN-5t-30g"/>
                 <outlet property="messageBubbleLeftRightMarginConstraint" destination="k2n-jk-kOg" id="DoB-EE-Ka1"/>
@@ -153,7 +135,6 @@
     </objects>
     <resources>
         <image name="greenV" width="18" height="17"/>
-        <image name="imError" width="40" height="40"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
