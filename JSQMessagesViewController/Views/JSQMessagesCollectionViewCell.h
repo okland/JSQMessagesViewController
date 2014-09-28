@@ -20,6 +20,7 @@
 
 #import "JSQMessagesLabel.h"
 
+
 @class JSQMessagesCollectionViewCell;
 
 /**
@@ -73,6 +74,14 @@
  *  @see JSQMessagesCollectionViewCellOutgoing.
  */
 @interface JSQMessagesCollectionViewCell : UICollectionViewCell
+
+// Set message status enums
+typedef NS_ENUM(NSInteger, MessageSendingState) {
+    jsq_messageNotSent,
+    jsq_messageSentSuccesfully,
+    jsq_messageReceivedSuccesfully,
+    jsq_messageSendingError
+};
 
 /**
  *  The object that acts as the delegate for the cell.

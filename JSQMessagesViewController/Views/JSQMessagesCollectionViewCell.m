@@ -238,19 +238,19 @@
 - (void)updateMessageStatus:(NSInteger)status {
     switch (status) {
             // Sent succesfully
-        case 1:
+        case jsq_messageSentSuccesfully:
             [[self greenV1] setHidden:FALSE];
             [[self greenV2] setHidden:TRUE];
             [[self imError] setHidden:TRUE];
             break;
             // Received
-        case 2:
+        case jsq_messageReceivedSuccesfully:
             [[self greenV1] setHidden:FALSE];
             [[self greenV2] setHidden:FALSE];
             [[self imError] setHidden:TRUE];
             break;
             // Error sending
-        case 3:
+        case jsq_messageSendingError:
             [[self greenV1] setHidden:TRUE];
             [[self greenV2] setHidden:TRUE];
             [[self imError] setHidden:FALSE];
