@@ -16,7 +16,8 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
+@import UIKit;
 
 /**
  *  The `JSQMessageMediaData` protocol defines the common interface through which
@@ -25,12 +26,11 @@
  *  It declares the required and optional methods that a class must implement so that instances of that class
  *  can be displayed properly within a `JSQMessagesCollectionViewCell`.
  *
- *  TODO: mention concrete media items
- 
- //A concrete class that conforms to this protocol is provided in the library.
- 
+ *  This library provides a few concrete classes that conform to this protocol. You may use them as-is,
+ *  but they will likely require some modifications or extensions to conform to your particular data models.
+ *  These concrete media items are: `JSQPhotoMediaItem`.
  *
- *  @see TODO: list media item classes
+ *  @see JSQPhotoMediaItem.
  */
 @protocol JSQMessageMediaData <NSObject>
 
@@ -60,9 +60,11 @@
  *  this placeholder view will be used until mediaView is not `nil`.
  *
  *  @discussion If you do not need support for a placeholder view, then you may simply return the
- *  same value here as mediaView.
+ *  same value here as mediaView. Otherwise, consider using `JSQMessagesMediaPlaceholderView`.
  *
  *  @warning You must not return `nil` from this method.
+ *
+ *  @see JSQMessagesMediaPlaceholderView.
  */
 - (UIView *)mediaPlaceholderView;
 

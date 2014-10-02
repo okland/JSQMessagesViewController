@@ -18,6 +18,9 @@
 
 #import "JSQPhotoMediaItem.h"
 
+#import "JSQMessagesMediaPlaceholderView.h"
+
+
 @implementation JSQPhotoMediaItem
 
 #pragma mark - Initialization
@@ -40,6 +43,10 @@
 
 - (UIView *)mediaView
 {
+    if (self.image == nil) {
+        return nil;
+    }
+    
     UIImageView *imgView = [[UIImageView alloc] initWithImage:self.image];
     imgView.contentMode = UIViewContentModeScaleAspectFill;
     imgView.clipsToBounds = YES;
@@ -54,11 +61,7 @@
 
 - (UIView *)mediaPlaceholderView
 {
-    // TODO: place holder media view
-    UIView *view = [[UIView alloc] init];
-    view.backgroundColor = [UIColor lightGrayColor];
-    view.layer.cornerRadius = 20.0f;
-    return view;
+    return [JSQMessagesMediaPlaceholderView viewWithActivityIndicator];
 }
 
 #pragma mark - NSObject
