@@ -1,6 +1,6 @@
 //
 //  Created by Jesse Squires
-//  http://www.hexedbits.com
+//  http://www.jessesquires.com
 //
 //
 //  Documentation
@@ -38,11 +38,29 @@
     
     self.title = @"JSQMessages";
     
+    /**
+     *  You MUST set your senderId and display name
+     */
     self.senderId = kJSQDemoAvatarIdSquires;
-    
     self.senderDisplayName = kJSQDemoAvatarDisplayNameSquires;
+
     
+    /**
+     *  Load up our fake data for the demo
+     */
     self.demoData = [[DemoModelData alloc] init];
+    
+    
+    /**
+     *  You can set custom avatar sizes
+     */
+    if (![NSUserDefaults incomingAvatarSetting]) {
+        self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeZero;
+    }
+    
+    if (![NSUserDefaults outgoingAvatarSetting]) {
+        self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero;
+    }
     
     /**
      *  Remove camera button since media messages are not yet implemented
@@ -51,8 +69,6 @@
      *
      *  Or, you can set a custom `leftBarButtonItem` and a custom `rightBarButtonItem`
      */
-    
-        
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"typing"]
                                                                               style:UIBarButtonItemStyleBordered
                                                                              target:self
@@ -79,8 +95,7 @@
      *  You must set this from `viewDidAppear:`
      *  Note: this feature is mostly stable, but still experimental
      */
-    
-    // self.collectionView.collectionViewLayout.springinessEnabled = YES;
+    self.collectionView.collectionViewLayout.springinessEnabled = [NSUserDefaults springinessSetting];
 }
 
 
@@ -129,38 +144,49 @@
         
         JSQMessage *newMessage = nil;
         id<JSQMessageMediaData> newMediaData = nil;
-        id newMediaAttachment = nil;
+        id newMediaAttachmentCopy = nil;
         
-        if ([copyMessage isKindOfClass:[JSQTextMessage class]]) {
-            /**
-             *  Last message was a text message
-             */
-            newMessage = [JSQTextMessage messageWithSenderId:randomUserId
-                                                 displayName:self.demoData.users[randomUserId]
-                                                        text:copyMessage.text];
-        }
-        else if ([copyMessage isKindOfClass:[JSQMediaMessage class]]) {
+        if ([copyMessage isKindOfClass:[JSQMediaMessage class]]) {
             /**
              *  Last message was a media message
              */
             id<JSQMessageMediaData> copyMediaData = copyMessage.media;
             
             if ([copyMediaData isKindOfClass:[JSQPhotoMediaItem class]]) {
-                JSQPhotoMediaItem *photoItem = [((JSQPhotoMediaItem *)copyMediaData) copy];
-                newMediaAttachment = [UIImage imageWithCGImage:photoItem.image.CGImage];
+                JSQPhotoMediaItem *photoItemCopy = [((JSQPhotoMediaItem *)copyMediaData) copy];
+                newMediaAttachmentCopy = [UIImage imageWithCGImage:photoItemCopy.image.CGImage];
                 
                 /**
                  *  Set image to nil to simulate "downloading" the image
                  *  and show the placeholder view
                  */
-                photoItem.image = nil;
+                photoItemCopy.image = nil;
                 
-                newMediaData = photoItem;
+                newMediaData = photoItemCopy;
+            }
+            else if ([copyMediaData isKindOfClass:[JSQLocationMediaItem class]]) {
+                JSQLocationMediaItem *locationItemCopy = [((JSQLocationMediaItem *)copyMediaData) copy];
+                newMediaAttachmentCopy = [locationItemCopy.location copy];
+                
+                /**
+                 *  Set location to nil to simulate "downloading" the location data
+                 */
+                locationItemCopy.location = nil;
+                
+                newMediaData = locationItemCopy;
             }
             
             newMessage = [JSQMediaMessage messageWithSenderId:randomUserId
                                                   displayName:self.demoData.users[randomUserId]
                                                         media:newMediaData];
+        }
+        else {
+            /**
+             *  Last message was a text message
+             */
+            newMessage = [JSQTextMessage messageWithSenderId:randomUserId
+                                                 displayName:self.demoData.users[randomUserId]
+                                                        text:copyMessage.text];
         }
         
         /**
@@ -181,12 +207,21 @@
              */
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 /**
-                 *  Media is "finished downloading"
+                 *  Media is "finished downloading", re-display visible cells
+                 *
+                 *  If media cell is not visible, the next time it is dequeued the view controller will display its new attachment data
+                 *
+                 *  Reload the specific item, or simply call `reloadData`
                  */
                 
                 if ([newMediaData isKindOfClass:[JSQPhotoMediaItem class]]) {
-                    ((JSQPhotoMediaItem *)newMediaData).image = newMediaAttachment;
+                    ((JSQPhotoMediaItem *)newMediaData).image = newMediaAttachmentCopy;
                     [self.collectionView reloadData];
+                }
+                else if ([newMediaData isKindOfClass:[JSQLocationMediaItem class]]) {
+                    [((JSQLocationMediaItem *)newMediaData)setLocation:newMediaAttachmentCopy withCompletionHandler:^{
+                        [self.collectionView reloadData];
+                    }];
                 }
             });
         }
@@ -230,13 +265,36 @@
 
 - (void)didPressAccessoryButton:(UIButton *)sender
 {
-    // TODO: temporary send photo, make this better
-    JSQPhotoMediaItem *photoItem = [[JSQPhotoMediaItem alloc] initWithImage:[UIImage imageNamed:@"goldengate"]];
-    JSQMediaMessage *mediaMessage = [JSQMediaMessage messageWithSenderId:kJSQDemoAvatarIdSquires
-                                                             displayName:kJSQDemoAvatarDisplayNameSquires
-                                                                   media:photoItem];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Media messages"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                         destructiveButtonTitle:nil
+                                              otherButtonTitles:@"Send photo", @"Send location", nil];
     
-    [self.demoData.messages addObject:mediaMessage];
+    [sheet showFromToolbar:self.inputToolbar];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+        return;
+    }
+    
+    switch (buttonIndex) {
+        case 0:
+            [self.demoData addPhotoMediaMessage];
+            break;
+            
+        case 1:
+        {
+            __weak UICollectionView *weakView = self.collectionView;
+            
+            [self.demoData addLocationMediaMessageCompletion:^{
+                [weakView reloadData];
+            }];
+        }
+            break;
+    }
     
     [JSQSystemSoundPlayer jsq_playMessageSentSound];
     [self finishSendingMessage];
@@ -292,6 +350,18 @@
      *  Override the defaults in `viewDidLoad`
      */
     JSQMessage *message = [self.demoData.messages objectAtIndex:indexPath.item];
+    
+    if ([message.senderId isEqualToString:self.senderId]) {
+        if (![NSUserDefaults outgoingAvatarSetting]) {
+            return nil;
+        }
+    }
+    else {
+        if (![NSUserDefaults incomingAvatarSetting]) {
+            return nil;
+        }
+    }
+    
     
     return [self.demoData.avatars objectForKey:message.senderId];
 }

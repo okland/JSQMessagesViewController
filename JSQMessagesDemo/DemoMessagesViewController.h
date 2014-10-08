@@ -1,6 +1,6 @@
 //
 //  Created by Jesse Squires
-//  http://www.hexedbits.com
+//  http://www.jessesquires.com
 //
 //
 //  Documentation
@@ -16,10 +16,13 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
+
+// Import all the things
 #import "JSQMessages.h"
 
-
 #import "DemoModelData.h"
+#import "NSUserDefaults+DemoSettings.h"
+
 
 @class DemoMessagesViewController;
 
@@ -32,7 +35,7 @@
 
 
 
-@interface DemoMessagesViewController : JSQMessagesViewController
+@interface DemoMessagesViewController : JSQMessagesViewController <UIActionSheetDelegate>
 
 @property (weak, nonatomic) id<JSQDemoViewControllerDelegate> delegateModal;
 
