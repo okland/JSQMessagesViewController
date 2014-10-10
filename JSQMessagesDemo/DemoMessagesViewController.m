@@ -73,6 +73,7 @@
                                                                               style:UIBarButtonItemStyleBordered
                                                                              target:self
                                                                              action:@selector(receiveMessagePressed:)];
+    [self changeBackgroundImage:[UIImage imageNamed:@"demo_avatar_cook"]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
