@@ -1,6 +1,6 @@
 //
 //  Created by Jesse Squires
-//  http://www.hexedbits.com
+//  http://www.jessesquires.com
 //
 //
 //  Documentation
@@ -18,6 +18,7 @@
 
 @import Foundation;
 @import UIKit;
+@import CoreLocation;
 
 #import "JSQMessages.h"
 
@@ -50,5 +51,9 @@ static NSString * const kJSQDemoAvatarIdWoz = @"309-41802-93823";
 @property (strong, nonatomic) JSQMessagesBubbleImage *incomingBubbleImageData;
 
 @property (strong, nonatomic) NSDictionary *users;
+
+- (void)addPhotoMediaMessage;
+
+- (void)addLocationMediaMessageCompletion:(JSQLocationMediaItemCompletionBlock)completion;
 
 @end
