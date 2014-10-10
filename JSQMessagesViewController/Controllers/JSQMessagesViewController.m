@@ -49,11 +49,14 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
 @interface JSQMessagesViewController () <JSQMessagesInputToolbarDelegate,
                                          JSQMessagesKeyboardControllerDelegate>
 
+
 @property (weak, nonatomic) IBOutlet JSQMessagesCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet JSQMessagesInputToolbar *inputToolbar;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomLayoutGuide;
+@property (strong, nonatomic) IBOutlet UIImageView *backgroundImageView;
+
 
 @property (weak, nonatomic) UIView *snapshotView;
 
@@ -109,6 +112,12 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass([JSQMessagesViewController class])
                                           bundle:[NSBundle mainBundle]];
+}
+
+
+- (void)changeBackgroundImage:(UIImage *)image {
+    
+    [self.backgroundImageView setImage:image];
 }
 
 #pragma mark - Initialization

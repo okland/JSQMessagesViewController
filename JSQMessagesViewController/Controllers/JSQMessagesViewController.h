@@ -247,4 +247,6 @@
  */
 - (void)scrollToBottomAnimated:(BOOL)animated;
 
+- (void)changeBackgroundImage:(UIImage *)image;
+
 @end
