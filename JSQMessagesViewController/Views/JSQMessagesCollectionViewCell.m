@@ -23,6 +23,7 @@
 #import "JSQMessagesCollectionViewLayoutAttributes.h"
 
 #import "UIView+JSQMessages.h"
+#import "UIDevice+JSQMessages.h"
 
 
 @interface JSQMessagesCollectionViewCell ()
@@ -230,7 +231,10 @@
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
-    self.contentView.frame = bounds;
+    
+    if ([UIDevice jsq_isCurrentDeviceBeforeiOS8]) {
+        self.contentView.frame = bounds;
+    }
 }
 
 
@@ -314,7 +318,7 @@
     [self.messageBubbleImageView removeFromSuperview];
     [self.textView removeFromSuperview];
     
-    mediaView.translatesAutoresizingMaskIntoConstraints = NO;
+    [mediaView setTranslatesAutoresizingMaskIntoConstraints:NO];
     mediaView.frame = self.messageBubbleContainerView.bounds;
     
     [self.messageBubbleContainerView addSubview:mediaView];
