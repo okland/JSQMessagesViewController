@@ -16,9 +16,9 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-@import Foundation;
-@import UIKit;
-@import CoreLocation;
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 #import "JSQMessages.h"
 
@@ -55,5 +55,7 @@ static NSString * const kJSQDemoAvatarIdWoz = @"309-41802-93823";
 - (void)addPhotoMediaMessage;
 
 - (void)addLocationMediaMessageCompletion:(JSQLocationMediaItemCompletionBlock)completion;
+
+- (void)addVideoMediaMessage;
 
 @end

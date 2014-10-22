@@ -62,7 +62,9 @@
         self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero;
     }
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"typing"]
+    self.showLoadEarlierMessagesHeader = YES;
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage jsq_defaultTypingIndicatorImage]
                                                                               style:UIBarButtonItemStyleBordered
                                                                              target:self
                                                                              action:@selector(receiveMessagePressed:)];
@@ -148,6 +150,7 @@
             
             if ([copyMediaData isKindOfClass:[JSQPhotoMediaItem class]]) {
                 JSQPhotoMediaItem *photoItemCopy = [((JSQPhotoMediaItem *)copyMediaData) copy];
+                photoItemCopy.appliesMediaViewMaskAsOutgoing = NO;
                 newMediaAttachmentCopy = [UIImage imageWithCGImage:photoItemCopy.image.CGImage];
                 
                 /**
@@ -160,6 +163,7 @@
             }
             else if ([copyMediaData isKindOfClass:[JSQLocationMediaItem class]]) {
                 JSQLocationMediaItem *locationItemCopy = [((JSQLocationMediaItem *)copyMediaData) copy];
+                locationItemCopy.appliesMediaViewMaskAsOutgoing = NO;
                 newMediaAttachmentCopy = [locationItemCopy.location copy];
                 
                 /**
@@ -168,6 +172,22 @@
                 locationItemCopy.location = nil;
                 
                 newMediaData = locationItemCopy;
+            }
+            else if ([copyMediaData isKindOfClass:[JSQVideoMediaItem class]]) {
+                JSQVideoMediaItem *videoItemCopy = [((JSQVideoMediaItem *)copyMediaData) copy];
+                videoItemCopy.appliesMediaViewMaskAsOutgoing = NO;
+                newMediaAttachmentCopy = [videoItemCopy.fileURL copy];
+                
+                /**
+                 *  Reset video item to simulate "downloading" the video
+                 */
+                videoItemCopy.fileURL = nil;
+                videoItemCopy.isReadyToPlay = NO;
+                
+                newMediaData = videoItemCopy;
+            }
+            else {
+                NSLog(@"%s error: unrecognized media item", __PRETTY_FUNCTION__);
             }
             
             newMessage = [JSQMediaMessage messageWithSenderId:randomUserId
@@ -217,6 +237,15 @@
                         [self.collectionView reloadData];
                     }];
                 }
+                else if ([newMediaData isKindOfClass:[JSQVideoMediaItem class]]) {
+                    ((JSQVideoMediaItem *)newMediaData).fileURL = newMediaAttachmentCopy;
+                    ((JSQVideoMediaItem *)newMediaData).isReadyToPlay = YES;
+                    [self.collectionView reloadData];
+                }
+                else {
+                    NSLog(@"%s error: unrecognized media item", __PRETTY_FUNCTION__);
+                }
+                
             });
         }
         
@@ -263,7 +292,7 @@
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
                                          destructiveButtonTitle:nil
-                                              otherButtonTitles:@"Send photo", @"Send location", nil];
+                                              otherButtonTitles:@"Send photo", @"Send location", @"Send video", nil];
     
     [sheet showFromToolbar:self.inputToolbar];
 }
@@ -287,6 +316,10 @@
                 [weakView reloadData];
             }];
         }
+            break;
+            
+        case 2:
+            [self.demoData addVideoMediaMessage];
             break;
     }
     
