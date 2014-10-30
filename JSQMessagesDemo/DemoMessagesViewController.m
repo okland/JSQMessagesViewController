@@ -63,6 +63,7 @@
     }
     
     self.showLoadEarlierMessagesHeader = YES;
+    self.collectionView.typingIndicatorDisplaysOnLeft = NO;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage jsq_defaultTypingIndicatorImage]
                                                                               style:UIBarButtonItemStyleBordered

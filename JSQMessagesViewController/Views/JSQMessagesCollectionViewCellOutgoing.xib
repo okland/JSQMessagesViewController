@@ -105,7 +105,7 @@
             </view>
             <constraints>
                 <constraint firstItem="2zh-vR-QJW" firstAttribute="top" secondItem="p52-YN-yLu" secondAttribute="bottom" id="3Wx-g0-fTc"/>
-                <constraint firstAttribute="trailing" secondItem="jxM-YD-sVG" secondAttribute="trailing" id="AwY-g7-f1T"/>
+                <constraint firstAttribute="right" secondItem="jxM-YD-sVG" secondAttribute="right" id="AwY-g7-f1T"/>
                 <constraint firstAttribute="right" secondItem="7Uc-dI-YDD" secondAttribute="right" constant="50" id="Bvy-sU-N0O"/>
                 <constraint firstItem="jxM-YD-sVG" firstAttribute="top" secondItem="23f-xH-rkY" secondAttribute="top" id="HYT-Tw-whz"/>
                 <constraint firstAttribute="bottom" secondItem="tII-0t-dOI" secondAttribute="bottom" id="JOS-Fc-hxi"/>
