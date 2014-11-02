@@ -44,7 +44,6 @@
     self.senderId = kJSQDemoAvatarIdSquires;
     self.senderDisplayName = kJSQDemoAvatarDisplayNameSquires;
 
-    
     /**
      *  Load up our fake data for the demo
      */
@@ -69,7 +68,8 @@
                                                                               style:UIBarButtonItemStyleBordered
                                                                              target:self
                                                                              action:@selector(receiveMessagePressed:)];
-    [self changeBackgroundImage:[UIImage imageNamed:@"demo_avatar_cook"]];
+
+    //[self changeBackgroundImage:[UIImage imageNamed:@"demo_avatar_cook"]];
 }
 
 - (void)viewWillAppear:(BOOL)animated

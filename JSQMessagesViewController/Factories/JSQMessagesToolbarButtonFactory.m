@@ -61,4 +61,21 @@
     return sendButton;
 }
 
++ (UIButton *)defaultNoteButtonItem
+{
+    UIImage *accessoryImage = [UIImage jsq_defaultNoteImage];
+    UIImage *normalImage = [accessoryImage jsq_imageMaskedWithColor:[UIColor lightGrayColor]];
+    UIImage *highlightedImage = [accessoryImage jsq_imageMaskedWithColor:[UIColor darkGrayColor]];
+    
+    UIButton *noteButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    [noteButton setImage:normalImage forState:UIControlStateNormal];
+    [noteButton setImage:highlightedImage forState:UIControlStateHighlighted];
+    
+    noteButton.contentMode = UIViewContentModeScaleAspectFit;
+    noteButton.backgroundColor = [UIColor clearColor];
+    noteButton.tintColor = [UIColor lightGrayColor];
+    
+    return noteButton;
+}
+
 @end

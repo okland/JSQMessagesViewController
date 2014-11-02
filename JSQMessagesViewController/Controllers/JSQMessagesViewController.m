@@ -37,7 +37,7 @@
 #import "JSQMessagesComposerTextView.h"
 
 #import "JSQMessagesTimestampFormatter.h"
-
+#import "JSQMessagesToolbarButtonFactory.h"
 #import "NSString+JSQMessages.h"
 #import "UIColor+JSQMessages.h"
 #import "UIDevice+JSQMessages.h"
@@ -613,6 +613,7 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
                         senderId:self.senderId
                senderDisplayName:self.senderDisplayName
                             date:[NSDate date]];
+        self.inputToolbar.contentView.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
     }
     else {
         [self didPressAccessoryButton:sender];
@@ -647,7 +648,11 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     if (textView != self.inputToolbar.contentView.textView) {
         return;
     }
-    
+    if ([textView hasText]) {
+        self.inputToolbar.contentView.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultSendButtonItem];
+    } else {
+        self.inputToolbar.contentView.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
+    }
     [self.inputToolbar toggleSendButtonEnabled];
 }
 

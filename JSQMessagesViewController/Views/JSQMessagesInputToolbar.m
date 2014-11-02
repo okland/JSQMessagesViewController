@@ -68,7 +68,7 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
     [self jsq_addObservers];
     
     self.contentView.leftBarButtonItem = [JSQMessagesToolbarButtonFactory defaultAccessoryButtonItem];
-    self.contentView.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultSendButtonItem];
+    self.contentView.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
     
     [self toggleSendButtonEnabled];
 }
@@ -94,14 +94,12 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
 #pragma mark - Input toolbar
 
 - (void)toggleSendButtonEnabled
-{
-    BOOL hasText = [self.contentView.textView hasText];
-    
+{    
     if (self.sendButtonOnRight) {
-        self.contentView.rightBarButtonItem.enabled = hasText;
+        self.contentView.rightBarButtonItem.enabled = TRUE;
     }
     else {
-        self.contentView.leftBarButtonItem.enabled = hasText;
+        self.contentView.leftBarButtonItem.enabled = TRUE;
     }
 }
 

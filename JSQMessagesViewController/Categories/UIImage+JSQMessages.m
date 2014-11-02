@@ -85,6 +85,11 @@
     return [UIImage jsq_bubbleImageFromBundleWithName:@"clip"];
 }
 
++ (UIImage *)jsq_defaultNoteImage
+{
+    return [UIImage jsq_bubbleImageFromBundleWithName:@"play"];
+}
+
 + (UIImage *)jsq_defaultTypingIndicatorImage
 {
     return [UIImage jsq_bubbleImageFromBundleWithName:@"typing"];

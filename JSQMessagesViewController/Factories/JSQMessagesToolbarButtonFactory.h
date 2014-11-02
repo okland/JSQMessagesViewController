@@ -41,4 +41,14 @@
  */
 + (UIButton *)defaultSendButtonItem;
 
+/**
+ *  Creates and returns a new button that is styled as the default note button.
+ *  The button has a create note icon image and no text.
+ *
+ *  @return A newly created button.
+ */
++ (UIButton *)defaultNoteButtonItem;
+
+
+
 @end
