@@ -19,7 +19,7 @@
 #import "JSQMessagesToolbarContentView.h"
 
 #import "JSQMessagesComposerTextView.h"
-
+#import "JSQMessagesToolbarButtonFactory.h"
 #import "UIView+JSQMessages.h"
 
 const CGFloat kJSQMessagesToolbarContentViewHorizontalSpacingDefault = 4.0f;
@@ -38,6 +38,9 @@ const CGFloat kJSQMessagesToolbarContentViewHorizontalSpacingDefault = 4.0f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftHorizontalSpacingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightHorizontalSpacingConstraint;
 
+@property (weak, nonatomic) IBOutlet UIView *closeNoteButtonContainerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *closeNoteButtonContainerViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet UILabel *noteMessageLabel;
 @end
 
 
@@ -71,8 +74,10 @@ const CGFloat kJSQMessagesToolbarContentViewHorizontalSpacingDefault = 4.0f;
     _textView = nil;
     _leftBarButtonItem = nil;
     _rightBarButtonItem = nil;
+    _closeNoteButtonItem = nil;
     _leftBarButtonContainerView = nil;
     _rightBarButtonContainerView = nil;
+    _closeNoteButtonContainerView = nil;
 }
 
 #pragma mark - Setters
@@ -162,6 +167,31 @@ const CGFloat kJSQMessagesToolbarContentViewHorizontalSpacingDefault = 4.0f;
     [self setNeedsUpdateConstraints];
 }
 
+- (void)setCloseNoteButtonItem:(UIButton *)closeNoteButtonItem
+{
+    if (_closeNoteButtonItem) {
+        [_closeNoteButtonItem removeFromSuperview];
+    }
+    
+    if (!closeNoteButtonItem) {
+        _closeNoteButtonItem = nil;
+        self.closeNoteButtonContainerView.hidden = YES;
+        return;
+    }
+    
+    if (CGRectEqualToRect(closeNoteButtonItem.frame, CGRectZero)) {
+        closeNoteButtonItem.frame = self.closeNoteButtonContainerView.bounds;
+    }
+    
+    self.closeNoteButtonContainerView.hidden = YES;
+    
+    [self.closeNoteButtonContainerView addSubview:closeNoteButtonItem];
+    [self.closeNoteButtonContainerView jsq_pinAllEdgesOfSubview:closeNoteButtonItem];
+    [self setNeedsUpdateConstraints];
+    
+    _closeNoteButtonItem = closeNoteButtonItem;
+}
+
 #pragma mark - Getters
 
 - (CGFloat)leftBarButtonItemWidth
@@ -180,6 +210,30 @@ const CGFloat kJSQMessagesToolbarContentViewHorizontalSpacingDefault = 4.0f;
 {
     [super setNeedsDisplay];
     [self.textView setNeedsDisplay];
+}
+
+#pragma mark - Note
+- (void)showNoteKeyboard:(BOOL)flag {
+    if (flag) {
+        _noteMessageLabel.hidden = FALSE;
+        self.textBoxVerticalTopSpaceConstraint.constant = 35.0f;
+        self.leftBarButtonItem.hidden = TRUE;
+        self.leftBarButtonContainerViewWidthConstraint.constant = 0.0f;
+        self.textView.placeHolder = NSLocalizedStringFromTable(@"New Note", @"JSQMessages", @"Placeholder text for the note input text view");
+        self.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultSaveButtonItem];
+        self.closeNoteButtonContainerView.hidden = FALSE;
+        self.closeNoteButtonItem.hidden = FALSE;
+    } else {
+        _noteMessageLabel.hidden = TRUE;
+        self.textBoxVerticalTopSpaceConstraint.constant = 7.0f;
+        self.leftBarButtonItem.hidden = FALSE;
+        self.leftBarButtonContainerViewWidthConstraint.constant = 34.0f;
+        self.rightBarButtonContainerViewWidthConstraint.constant = 34.0f;
+        self.textView.placeHolder = NSLocalizedStringFromTable(@"New Message", @"JSQMessages", @"Placeholder text for the message input text view");
+        self.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
+        self.closeNoteButtonContainerView.hidden = TRUE;
+        self.closeNoteButtonItem.hidden = TRUE;
+    }
 }
 
 @end

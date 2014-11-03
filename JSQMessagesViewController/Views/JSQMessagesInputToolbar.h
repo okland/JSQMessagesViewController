@@ -54,6 +54,15 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesInputToolbarHeightDefault;
 - (void)messagesInputToolbar:(JSQMessagesInputToolbar *)toolbar
        didPressLeftBarButton:(UIButton *)sender;
 
+/**
+ *  Tells the delegate that the toolbar's `closeNoteButtonItem` has been pressed.
+ *
+ *  @param toolbar The object representing the toolbar sending this information.
+ *  @param sender  The button that received the touch event.
+ */
+- (void)messagesInputToolbar:(JSQMessagesInputToolbar *)toolbar
+       didPressCloseNoteBarButton:(UIButton *)sender;
+
 @end
 
 
@@ -88,9 +97,19 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesInputToolbarHeightDefault;
 @property (assign, nonatomic) BOOL sendButtonOnRight;
 
 /**
+ *  Flag whther we are corrently showing the note keyboard
+ */
+@property (assign, nonatomic) BOOL jsq_isNoteKeyboard;
+
+/**
+ *  Refresh buttons observers
+ */
+- (void)refreshObservers;
+/**
  *  Enables or disables the send button based on whether or not its `textView` has text.
  *  That is, the send button will be enabled if there is text in the `textView`, and disabled otherwise.
  */
 - (void)toggleSendButtonEnabled;
+
 
 @end

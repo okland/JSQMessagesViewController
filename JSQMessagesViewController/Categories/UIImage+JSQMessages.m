@@ -87,7 +87,7 @@
 
 + (UIImage *)jsq_defaultNoteImage
 {
-    return [UIImage jsq_bubbleImageFromBundleWithName:@"play"];
+    return [UIImage jsq_bubbleImageFromBundleWithName:@"note"];
 }
 
 + (UIImage *)jsq_defaultTypingIndicatorImage

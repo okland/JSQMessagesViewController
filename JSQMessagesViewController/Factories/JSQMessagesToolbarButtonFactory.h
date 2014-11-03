@@ -42,6 +42,14 @@
 + (UIButton *)defaultSendButtonItem;
 
 /**
+ *  Creates and returns a new button that is styled as the default save button.
+ *  The button has title text `@"Save"` and no image.
+ *
+ *  @return A newly created button.
+ */
++ (UIButton *)defaultSaveButtonItem;
+
+/**
  *  Creates and returns a new button that is styled as the default note button.
  *  The button has a create note icon image and no text.
  *
@@ -50,5 +58,12 @@
 + (UIButton *)defaultNoteButtonItem;
 
 
+/**
+ *  Creates and returns a new button that is styled as the default X button.
+ *  The button has a X text in it.
+ *
+ *  @return A newly created button.
+ */
++ (UIButton *)defaultXButtonItem;
 
 @end

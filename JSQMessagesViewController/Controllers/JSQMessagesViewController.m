@@ -64,6 +64,7 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
 @property (strong, nonatomic) JSQMessagesKeyboardController *keyboardController;
 
 @property (assign, nonatomic) BOOL jsq_isObserving;
+@property (assign, nonatomic) BOOL jsq_isNoteKeyboard;
 
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
 
@@ -311,10 +312,40 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     NSAssert(NO, @"Error! required method not implemented in subclass. Need to implement %s", __PRETTY_FUNCTION__);
 }
 
-- (void)didPressAccessoryButton:(UIButton *)sender { }
+- (void)didPressAccessoryButton:(UIButton *)sender {
+
+}
+
+- (void)didPressCloseNoteButton:(UIButton *)sender {
+    [self toggleNoteKeyboard];
+}
+
+- (void)toggleNoteKeyboard {
+    _jsq_isNoteKeyboard = !_jsq_isNoteKeyboard;
+    if (_jsq_isNoteKeyboard) {
+        self.toolbarHeightConstraint.constant = 70.0f;
+        self.inputToolbar.backgroundColor = [UIColor purpleColor];
+        self.inputToolbar.jsq_isNoteKeyboard = TRUE;
+        [self.inputToolbar.contentView showNoteKeyboard:TRUE];
+    } else {
+        self.toolbarHeightConstraint.constant = kJSQMessagesInputToolbarHeightDefault;
+        self.inputToolbar.backgroundColor = [UIColor clearColor];
+        self.inputToolbar.jsq_isNoteKeyboard = FALSE;
+        [self.inputToolbar.contentView showNoteKeyboard:FALSE];
+    }
+}
 
 - (void)finishSendingMessage
 {
+    // Check whether needs to toggle NoteKeyboard
+    if (_jsq_isNoteKeyboard || ![self.inputToolbar.contentView.textView hasText]) {
+        [self toggleNoteKeyboard];
+        if (![self.inputToolbar.contentView.textView hasText]) {
+            return;
+        }
+    } else {
+        [self.inputToolbar.contentView showNoteKeyboard:FALSE];
+    }
     UITextView *textView = self.inputToolbar.contentView.textView;
     textView.text = nil;
     [textView.undoManager removeAllActions];
@@ -329,6 +360,8 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     if (self.automaticallyScrollsToMostRecentMessage) {
         [self scrollToBottomAnimated:YES];
     }
+    
+    
 }
 
 - (void)finishReceivingMessage
@@ -613,11 +646,15 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
                         senderId:self.senderId
                senderDisplayName:self.senderDisplayName
                             date:[NSDate date]];
-        self.inputToolbar.contentView.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
     }
     else {
         [self didPressAccessoryButton:sender];
     }
+}
+
+- (void)messagesInputToolbar:(JSQMessagesInputToolbar *)toolbar didPressCloseNoteBarButton:(UIButton *)sender
+{
+    [self didPressCloseNoteButton:sender];
 }
 
 - (NSString *)jsq_currentlyComposedMessageText
@@ -648,11 +685,18 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     if (textView != self.inputToolbar.contentView.textView) {
         return;
     }
-    if ([textView hasText]) {
-        self.inputToolbar.contentView.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultSendButtonItem];
+    UIButton *rightButton;
+    if (_jsq_isNoteKeyboard) {
+        rightButton = [JSQMessagesToolbarButtonFactory defaultSaveButtonItem];
     } else {
-        self.inputToolbar.contentView.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
+        if ([textView hasText]) {
+            rightButton = [JSQMessagesToolbarButtonFactory defaultSendButtonItem];
+        } else {
+            rightButton = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
+        }
     }
+
+    self.inputToolbar.contentView.rightBarButtonItem = rightButton;
     [self.inputToolbar toggleSendButtonEnabled];
 }
 

@@ -34,9 +34,10 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
 @interface JSQMessagesInputToolbar ()
 
 @property (assign, nonatomic) BOOL jsq_isObserving;
-
 - (void)jsq_leftBarButtonPressed:(UIButton *)sender;
 - (void)jsq_rightBarButtonPressed:(UIButton *)sender;
+- (void)jsq_closeNoteBarButtonPressed:(UIButton *)sender;
+
 
 - (void)jsq_addObservers;
 - (void)jsq_removeObservers;
@@ -68,7 +69,9 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
     [self jsq_addObservers];
     
     self.contentView.leftBarButtonItem = [JSQMessagesToolbarButtonFactory defaultAccessoryButtonItem];
-    self.contentView.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
+    self.contentView.rightBarButtonItem = _jsq_isNoteKeyboard ? [JSQMessagesToolbarButtonFactory defaultSaveButtonItem]: [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
+    self.contentView.closeNoteButtonItem = [JSQMessagesToolbarButtonFactory defaultXButtonItem];
+    self.contentView.closeNoteButtonItem.hidden = TRUE;
     
     [self toggleSendButtonEnabled];
 }
@@ -91,15 +94,21 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
     [self.delegate messagesInputToolbar:self didPressRightBarButton:sender];
 }
 
+- (void)jsq_closeNoteBarButtonPressed:(UIButton *)sender
+{
+    [self.delegate messagesInputToolbar:self didPressCloseNoteBarButton:sender];
+}
+
 #pragma mark - Input toolbar
 
 - (void)toggleSendButtonEnabled
 {    
+    BOOL hasText = _jsq_isNoteKeyboard ? [self.contentView.textView hasText] : TRUE;
     if (self.sendButtonOnRight) {
-        self.contentView.rightBarButtonItem.enabled = TRUE;
+        self.contentView.rightBarButtonItem.enabled = hasText;
     }
     else {
-        self.contentView.leftBarButtonItem.enabled = TRUE;
+        self.contentView.leftBarButtonItem.enabled = hasText;
     }
 }
 
@@ -130,6 +139,16 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
                                                         action:@selector(jsq_rightBarButtonPressed:)
                                               forControlEvents:UIControlEventTouchUpInside];
             }
+            else if ([keyPath isEqualToString:NSStringFromSelector(@selector(closeNoteButtonItem))]) {
+                
+                [self.contentView.closeNoteButtonItem removeTarget:self
+                                                           action:NULL
+                                                 forControlEvents:UIControlEventTouchUpInside];
+                
+                [self.contentView.closeNoteButtonItem addTarget:self
+                                                        action:@selector(jsq_closeNoteBarButtonPressed:)
+                                              forControlEvents:UIControlEventTouchUpInside];
+            }
             
             [self toggleSendButtonEnabled];
         }
@@ -152,6 +171,11 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
                           options:0
                           context:kJSQMessagesInputToolbarKeyValueObservingContext];
     
+    [self.contentView addObserver:self
+                       forKeyPath:NSStringFromSelector(@selector(closeNoteButtonItem))
+                          options:0
+                          context:kJSQMessagesInputToolbarKeyValueObservingContext];
+    
     self.jsq_isObserving = YES;
 }
 
@@ -169,10 +193,22 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
         [_contentView removeObserver:self
                           forKeyPath:NSStringFromSelector(@selector(rightBarButtonItem))
                              context:kJSQMessagesInputToolbarKeyValueObservingContext];
+        
+        [_contentView removeObserver:self
+                          forKeyPath:NSStringFromSelector(@selector(closeNoteButtonItem))
+                             context:kJSQMessagesInputToolbarKeyValueObservingContext];
     }
-    @catch (NSException *__unused exception) { }
+    @catch (NSException *__unused exception) {
+    
+    }
     
     _jsq_isObserving = NO;
 }
+
+- (void)refreshObservers {
+    [self jsq_removeObservers];
+    [self jsq_addObservers];
+}
+
 
 @end

@@ -216,6 +216,14 @@
  */
 - (void)didPressAccessoryButton:(UIButton *)sender;
 
+
+/**
+ *  This method is called when the user taps the close note button on the `inputToolbar`.
+ *
+ *  @param sender The close note button that was pressed by the user.
+ */
+- (void)didPressCloseNoteButton:(UIButton *)sender;
+
 /**
  *  Completes the "sending" of a new message by animating and resetting the `inputToolbar`, 
  *  animating the addition of a new collection view cell in the collection view,

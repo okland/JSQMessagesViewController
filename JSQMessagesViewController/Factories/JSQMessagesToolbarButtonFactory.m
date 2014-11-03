@@ -61,6 +61,26 @@
     return sendButton;
 }
 
++ (UIButton *)defaultSaveButtonItem
+{
+    NSString *saveTitle = NSLocalizedStringFromTable(@"Save", @"JSQMessages", @"Text for the save button on the messages view toolbar");
+    
+    UIButton *saveButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    [saveButton setTitle:saveTitle forState:UIControlStateNormal];
+    [saveButton setTitleColor:[UIColor jsq_messageBubbleBlueColor] forState:UIControlStateNormal];
+    [saveButton setTitleColor:[[UIColor jsq_messageBubbleBlueColor] jsq_colorByDarkeningColorWithValue:0.1f] forState:UIControlStateHighlighted];
+    [saveButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+    
+    saveButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    saveButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    saveButton.titleLabel.minimumScaleFactor = 0.85f;
+    saveButton.contentMode = UIViewContentModeCenter;
+    saveButton.backgroundColor = [UIColor clearColor];
+    saveButton.tintColor = [UIColor jsq_messageBubbleBlueColor];
+    
+    return saveButton;
+}
+
 + (UIButton *)defaultNoteButtonItem
 {
     UIImage *accessoryImage = [UIImage jsq_defaultNoteImage];
@@ -78,4 +98,24 @@
     return noteButton;
 }
 
+
++ (UIButton *)defaultXButtonItem
+{
+    NSString *xTitle = @"X";
+    
+    UIButton *xButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    [xButton setTitle:xTitle forState:UIControlStateNormal];
+    [xButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [xButton setTitleColor:[[UIColor blackColor] jsq_colorByDarkeningColorWithValue:0.1f] forState:UIControlStateHighlighted];
+    [xButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+    
+    xButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    xButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    xButton.titleLabel.minimumScaleFactor = 0.85f;
+    xButton.contentMode = UIViewContentModeCenter;
+    xButton.backgroundColor = [UIColor clearColor];
+    xButton.tintColor = [UIColor jsq_messageBubbleBlueColor];
+    
+    return xButton;
+}
 @end

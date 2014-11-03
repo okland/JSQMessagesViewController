@@ -54,6 +54,7 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesToolbarContentViewHorizontalSpacingD
  */
 @property (assign, nonatomic) CGFloat leftBarButtonItemWidth;
 
+
 /**
  *  A custom button item displayed on the right of the toolbar content view.
  *
@@ -68,6 +69,18 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesToolbarContentViewHorizontalSpacingD
  *  Specifies the width of the rightBarButtonItem.
  */
 @property (assign, nonatomic) CGFloat rightBarButtonItemWidth;
+/**
+ *  The top value constaraint for text box
+ */
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBoxVerticalTopSpaceConstraint;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightBarButtonContainerViewWidthContraint;
+
+/**
+ *  A custom button item displayed on the top right of the toolbar content view.
+ *  Dedicated to close the note keyboard
+ */
+@property (weak, nonatomic) UIButton *closeNoteButtonItem;
 
 #pragma mark - Class methods
 
@@ -79,4 +92,11 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesToolbarContentViewHorizontalSpacingD
  */
 + (UINib *)nib;
 
+#pragma mark - Note
+/**
+ *  Ahow note keyboard or regular keyboard based on flag
+ *
+ *  @param flag - Bool
+ */
+- (void)showNoteKeyboard:(BOOL)flag;
 @end
