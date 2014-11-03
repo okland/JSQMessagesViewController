@@ -287,6 +287,30 @@
     [self finishSendingMessage];
 }
 
+- (void)didPressSendButton:(UIButton *)button
+           withNoteText:(NSString *)text
+                  senderId:(NSString *)senderId
+         senderDisplayName:(NSString *)senderDisplayName
+                      date:(NSDate *)date
+{
+    /**
+     *  Sending a message. Your implementation of this method should do *at least* the following:
+     *
+     *  1. Play sound (optional)
+     *  2. Add new id<JSQMessageData> object to your data source
+     *  3. Call `finishSendingMessage`
+     */
+    [JSQSystemSoundPlayer jsq_playMessageSentSound];
+    
+    JSQTextMessage *message = [[JSQTextMessage alloc] initWithSenderId:senderId
+                                                     senderDisplayName:senderDisplayName
+                                                                  date:date
+                                                                  text:text];
+    
+    [self.demoData.messages addObject:message];
+    [self finishSendingMessage];
+}
+
 - (void)didPressAccessoryButton:(UIButton *)sender
 {
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Media messages"
@@ -347,7 +371,13 @@
      */
     
     JSQMessage *message = [self.demoData.messages objectAtIndex:indexPath.item];
-    
+    if ([message.senderDisplayName isEqualToString:@"Note"]) {
+        if ([message.senderId isEqualToString:self.senderId]) {
+            return self.demoData.outgoingNoteBubbleImageData;
+        } else {
+            return self.demoData.incomingNoteBubbleImageData;
+        }
+    }
     if ([message.senderId isEqualToString:self.senderId]) {
         return self.demoData.outgoingBubbleImageData;
     }
@@ -414,6 +444,9 @@
 {
     JSQMessage *message = [self.demoData.messages objectAtIndex:indexPath.item];
     
+    if ([message.senderDisplayName isEqualToString:@"Note"]) {
+        return [[NSAttributedString alloc] initWithString:message.senderDisplayName];
+    }
     /**
      *  iOS7-style sender name labels
      */
@@ -517,10 +550,14 @@
 - (CGFloat)collectionView:(JSQMessagesCollectionView *)collectionView
                    layout:(JSQMessagesCollectionViewFlowLayout *)collectionViewLayout heightForMessageBubbleTopLabelAtIndexPath:(NSIndexPath *)indexPath
 {
+    JSQMessage *currentMessage = [self.demoData.messages objectAtIndex:indexPath.item];
+
+    if ([currentMessage.senderDisplayName isEqualToString:@"Note"]) {
+        return kJSQMessagesCollectionViewCellLabelHeightDefault;
+    }
     /**
      *  iOS7-style sender name labels
      */
-    JSQMessage *currentMessage = [self.demoData.messages objectAtIndex:indexPath.item];
     if ([[currentMessage senderId] isEqualToString:self.senderId]) {
         return 0.0f;
     }

@@ -69,7 +69,10 @@
  *  @return The default input toolbar note image.
  */
 + (UIImage *)jsq_defaultNoteImage;
-
+/**
+ *  @return The default input toolbar close note image.
+ */
++ (UIImage *)jsq_defaultCloseImage;
 /**
  *  @return The default typing indicator image.
  */

@@ -312,12 +312,23 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     NSAssert(NO, @"Error! required method not implemented in subclass. Need to implement %s", __PRETTY_FUNCTION__);
 }
 
+- (void)didPressSendButton:(UIButton *)button
+           withNoteText:(NSString *)text
+                  senderId:(NSString *)senderId
+         senderDisplayName:(NSString *)senderDisplayName
+                      date:(NSDate *)date
+{
+    NSAssert(NO, @"Error! required method not implemented in subclass. Need to implement %s", __PRETTY_FUNCTION__);
+}
 - (void)didPressAccessoryButton:(UIButton *)sender {
 
 }
 
 - (void)didPressCloseNoteButton:(UIButton *)sender {
     [self toggleNoteKeyboard];
+    if ([self.inputToolbar.contentView.textView hasText]) {
+        self.inputToolbar.contentView.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultSendButtonItem];
+    }
 }
 
 - (void)toggleNoteKeyboard {
@@ -337,19 +348,9 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
 
 - (void)finishSendingMessage
 {
-    // Check whether needs to toggle NoteKeyboard
-    if (_jsq_isNoteKeyboard || ![self.inputToolbar.contentView.textView hasText]) {
-        [self toggleNoteKeyboard];
-        if (![self.inputToolbar.contentView.textView hasText]) {
-            return;
-        }
-    } else {
-        [self.inputToolbar.contentView showNoteKeyboard:FALSE];
-    }
     UITextView *textView = self.inputToolbar.contentView.textView;
     textView.text = nil;
     [textView.undoManager removeAllActions];
-    
     [self.inputToolbar toggleSendButtonEnabled];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:UITextViewTextDidChangeNotification object:textView];
@@ -360,8 +361,6 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     if (self.automaticallyScrollsToMostRecentMessage) {
         [self scrollToBottomAnimated:YES];
     }
-    
-    
 }
 
 - (void)finishReceivingMessage
@@ -641,11 +640,29 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
 - (void)messagesInputToolbar:(JSQMessagesInputToolbar *)toolbar didPressRightBarButton:(UIButton *)sender
 {
     if (toolbar.sendButtonOnRight) {
-        [self didPressSendButton:sender
-                 withMessageText:[self jsq_currentlyComposedMessageText]
-                        senderId:self.senderId
-               senderDisplayName:self.senderDisplayName
-                            date:[NSDate date]];
+        // Check whether needs to toggle NoteKeyboard
+        if (_jsq_isNoteKeyboard || ![self.inputToolbar.contentView.textView hasText]) {
+            [self toggleNoteKeyboard];
+            if (![self.inputToolbar.contentView.textView hasText]) {
+                UITextView *textView = self.inputToolbar.contentView.textView;
+                textView.text = nil;
+                [textView.undoManager removeAllActions];
+                return;
+            } else {
+                [self didPressSendButton:sender
+                            withNoteText:[self jsq_currentlyComposedMessageText]
+                                senderId:self.senderId
+                       senderDisplayName:@"Note"
+                                    date:[NSDate date]];
+            }
+        } else {
+            [self.inputToolbar.contentView showNoteKeyboard:FALSE];
+            [self didPressSendButton:sender
+                     withMessageText:[self jsq_currentlyComposedMessageText]
+                            senderId:self.senderId
+                   senderDisplayName:self.senderDisplayName
+                                date:[NSDate date]];
+        }
     }
     else {
         [self didPressAccessoryButton:sender];
@@ -688,11 +705,14 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     UIButton *rightButton;
     if (_jsq_isNoteKeyboard) {
         rightButton = [JSQMessagesToolbarButtonFactory defaultSaveButtonItem];
+        self.inputToolbar.contentView.rightBarButtonContainerViewWidthContraint.constant = 50.0f;
     } else {
         if ([textView hasText]) {
             rightButton = [JSQMessagesToolbarButtonFactory defaultSendButtonItem];
+            self.inputToolbar.contentView.rightBarButtonContainerViewWidthContraint.constant = 50.0f;
         } else {
             rightButton = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
+            self.inputToolbar.contentView.rightBarButtonContainerViewWidthContraint.constant = 25.0f;
         }
     }
 

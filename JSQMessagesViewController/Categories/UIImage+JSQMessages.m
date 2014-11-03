@@ -90,6 +90,11 @@
     return [UIImage jsq_bubbleImageFromBundleWithName:@"note"];
 }
 
++ (UIImage *)jsq_defaultCloseImage
+{
+    return [UIImage jsq_bubbleImageFromBundleWithName:@"closeBtn"];
+}
+
 + (UIImage *)jsq_defaultTypingIndicatorImage
 {
     return [UIImage jsq_bubbleImageFromBundleWithName:@"typing"];

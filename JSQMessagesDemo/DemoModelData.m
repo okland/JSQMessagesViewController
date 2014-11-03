@@ -86,6 +86,11 @@
         
         self.outgoingBubbleImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
         self.incomingBubbleImageData = [bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleGreenColor]];
+        
+        JSQMessagesBubbleImageFactory *bubbleNoteFactory = [[JSQMessagesBubbleImageFactory alloc] initWithBubbleImage:[UIImage jsq_bubbleCompactTaillessImage] capInsets:UIEdgeInsetsZero];
+        
+        self.outgoingNoteBubbleImageData = [bubbleNoteFactory outgoingMessagesBubbleImageWithColor:[UIColor colorWithRed:0.500 green:0.000 blue:0.500 alpha:0.630]];
+        self.incomingNoteBubbleImageData = [bubbleNoteFactory incomingMessagesBubbleImageWithColor:[UIColor colorWithRed:0.500 green:0.000 blue:0.500 alpha:0.490]];
     }
     
     return self;

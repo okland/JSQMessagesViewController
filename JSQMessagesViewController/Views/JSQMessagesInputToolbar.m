@@ -70,7 +70,7 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
     
     self.contentView.leftBarButtonItem = [JSQMessagesToolbarButtonFactory defaultAccessoryButtonItem];
     self.contentView.rightBarButtonItem = _jsq_isNoteKeyboard ? [JSQMessagesToolbarButtonFactory defaultSaveButtonItem]: [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
-    self.contentView.closeNoteButtonItem = [JSQMessagesToolbarButtonFactory defaultXButtonItem];
+    self.contentView.closeNoteButtonItem = [JSQMessagesToolbarButtonFactory defaultCloseButtonItem];
     self.contentView.closeNoteButtonItem.hidden = TRUE;
     
     [self toggleSendButtonEnabled];

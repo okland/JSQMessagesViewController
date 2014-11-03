@@ -57,6 +57,13 @@
  */
 + (UIButton *)defaultNoteButtonItem;
 
+/**
+ *  Creates and returns a new button that is styled as the default close button.
+ *  The button has a create close icon image and no text.
+ *
+ *  @return A newly created button.
+ */
++ (UIButton *)defaultCloseButtonItem;
 
 /**
  *  Creates and returns a new button that is styled as the default X button.

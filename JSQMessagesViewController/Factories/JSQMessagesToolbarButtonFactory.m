@@ -98,6 +98,23 @@
     return noteButton;
 }
 
++ (UIButton *)defaultCloseButtonItem
+{
+    UIImage *closeImage = [UIImage jsq_defaultCloseImage];
+    UIImage *normalImage = [closeImage jsq_imageMaskedWithColor:[UIColor lightGrayColor]];
+    UIImage *highlightedImage = [closeImage jsq_imageMaskedWithColor:[UIColor darkGrayColor]];
+    
+    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    [closeButton setImage:normalImage forState:UIControlStateNormal];
+    [closeButton setImage:highlightedImage forState:UIControlStateHighlighted];
+    
+    closeButton.contentMode = UIViewContentModeScaleAspectFit;
+    closeButton.backgroundColor = [UIColor clearColor];
+    closeButton.tintColor = [UIColor lightGrayColor];
+    
+    return closeButton;
+}
+
 
 + (UIButton *)defaultXButtonItem
 {
