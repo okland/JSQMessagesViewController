@@ -69,7 +69,13 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
     [self jsq_addObservers];
     
     self.contentView.leftBarButtonItem = [JSQMessagesToolbarButtonFactory defaultAccessoryButtonItem];
-    self.contentView.rightBarButtonItem = _jsq_isNoteKeyboard ? [JSQMessagesToolbarButtonFactory defaultSaveButtonItem]: [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
+    
+    if (_jsq_supportNoteKeyboard) {
+       self.contentView.rightBarButtonItem = _jsq_isNoteKeyboard ? [JSQMessagesToolbarButtonFactory defaultSaveButtonItem]: [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
+    } else {
+       self.contentView.rightBarButtonItem  = [JSQMessagesToolbarButtonFactory defaultSendButtonItem];
+    }
+    
     self.contentView.closeNoteButtonItem = [JSQMessagesToolbarButtonFactory defaultCloseButtonItem];
     self.contentView.closeNoteButtonItem.hidden = TRUE;
     
@@ -103,7 +109,7 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
 
 - (void)toggleSendButtonEnabled
 {    
-    BOOL hasText = _jsq_isNoteKeyboard ? [self.contentView.textView hasText] : TRUE;
+    BOOL hasText = (_jsq_isNoteKeyboard || !_jsq_supportNoteKeyboard) ? [self.contentView.textView hasText] : TRUE;
     if (self.sendButtonOnRight) {
         self.contentView.rightBarButtonItem.enabled = hasText;
     }

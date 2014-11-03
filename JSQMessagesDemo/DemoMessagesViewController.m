@@ -43,7 +43,7 @@
      */
     self.senderId = kJSQDemoAvatarIdSquires;
     self.senderDisplayName = kJSQDemoAvatarDisplayNameSquires;
-
+    //self.supportNoteKeyboard = TRUE;
     /**
      *  Load up our fake data for the demo
      */

@@ -153,6 +153,7 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     self.incomingMediaCellIdentifier = [JSQMessagesCollectionViewCellIncoming mediaCellReuseIdentifier];
     
     self.showTypingIndicator = NO;
+    self.supportNoteKeyboard = NO;
     
     self.showLoadEarlierMessagesHeader = NO;
     
@@ -211,6 +212,14 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     [self.collectionView.collectionViewLayout invalidateLayoutWithContext:[JSQMessagesCollectionViewFlowLayoutInvalidationContext context]];
     [self.collectionView.collectionViewLayout invalidateLayout];
     [self.collectionView reloadData];
+}
+
+- (void)setSupportNoteKeyboard:(BOOL)supportNoteKeyboard {
+    _supportNoteKeyboard = supportNoteKeyboard;
+    self.inputToolbar.jsq_supportNoteKeyboard = supportNoteKeyboard;
+    if (supportNoteKeyboard && ![self.inputToolbar.contentView.textView hasText]) {
+        self.inputToolbar.contentView.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
+    }
 }
 
 #pragma mark - View lifecycle
@@ -640,8 +649,9 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
 - (void)messagesInputToolbar:(JSQMessagesInputToolbar *)toolbar didPressRightBarButton:(UIButton *)sender
 {
     if (toolbar.sendButtonOnRight) {
-        // Check whether needs to toggle NoteKeyboard
-        if (_jsq_isNoteKeyboard || ![self.inputToolbar.contentView.textView hasText]) {
+        
+        // Check whether needs to toggle NoteKeyboard if supportNoteKeyboard
+        if (_supportNoteKeyboard && (_jsq_isNoteKeyboard || ![self.inputToolbar.contentView.textView hasText])) {
             [self toggleNoteKeyboard];
             if (![self.inputToolbar.contentView.textView hasText]) {
                 UITextView *textView = self.inputToolbar.contentView.textView;
@@ -656,7 +666,10 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
                                     date:[NSDate date]];
             }
         } else {
-            [self.inputToolbar.contentView showNoteKeyboard:FALSE];
+            //  if supportNoteKeyboard true - hide note keyboard
+            if (_supportNoteKeyboard) {
+               [self.inputToolbar.contentView showNoteKeyboard:FALSE];
+            }
             [self didPressSendButton:sender
                      withMessageText:[self jsq_currentlyComposedMessageText]
                             senderId:self.senderId
@@ -703,19 +716,24 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
         return;
     }
     UIButton *rightButton;
-    if (_jsq_isNoteKeyboard) {
-        rightButton = [JSQMessagesToolbarButtonFactory defaultSaveButtonItem];
-        self.inputToolbar.contentView.rightBarButtonContainerViewWidthContraint.constant = 50.0f;
-    } else {
-        if ([textView hasText]) {
-            rightButton = [JSQMessagesToolbarButtonFactory defaultSendButtonItem];
+    // If support note keyboard
+    if (_supportNoteKeyboard) {
+        if (_jsq_isNoteKeyboard) {
+            rightButton = [JSQMessagesToolbarButtonFactory defaultSaveButtonItem];
             self.inputToolbar.contentView.rightBarButtonContainerViewWidthContraint.constant = 50.0f;
         } else {
-            rightButton = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
-            self.inputToolbar.contentView.rightBarButtonContainerViewWidthContraint.constant = 25.0f;
+            if ([textView hasText]) {
+                rightButton = [JSQMessagesToolbarButtonFactory defaultSendButtonItem];
+                self.inputToolbar.contentView.rightBarButtonContainerViewWidthContraint.constant = 50.0f;
+            } else {
+                rightButton = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
+                self.inputToolbar.contentView.rightBarButtonContainerViewWidthContraint.constant = 25.0f;
+            }
         }
+    } else {
+        rightButton = [JSQMessagesToolbarButtonFactory defaultSendButtonItem];
     }
-
+    
     self.inputToolbar.contentView.rightBarButtonItem = rightButton;
     [self.inputToolbar toggleSendButtonEnabled];
 }

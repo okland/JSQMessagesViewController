@@ -152,6 +152,11 @@
  */
 @property (assign, nonatomic) BOOL showTypingIndicator;
 
+
+/**
+ *  Specifies whether or not the view controller should show and support note keyboard.
+ */
+@property (assign, nonatomic) BOOL supportNoteKeyboard;
 /**
  *  Specifies whether or not the view controller should show the "load earlier messages" header view.
  *

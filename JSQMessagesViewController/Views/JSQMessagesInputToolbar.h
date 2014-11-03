@@ -97,9 +97,14 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesInputToolbarHeightDefault;
 @property (assign, nonatomic) BOOL sendButtonOnRight;
 
 /**
- *  Flag whther we are corrently showing the note keyboard
+ *  Flag whether we are corrently showing the note keyboard
  */
 @property (assign, nonatomic) BOOL jsq_isNoteKeyboard;
+
+/**
+ *  Flag whether we support showing the note keyboard
+ */
+@property (assign, nonatomic) BOOL jsq_supportNoteKeyboard;
 
 /**
  *  Refresh buttons observers
