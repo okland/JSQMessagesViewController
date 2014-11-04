@@ -211,10 +211,7 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
     _jsq_isObserving = NO;
 }
 
-- (void)refreshObservers {
-    [self jsq_removeObservers];
-    [self jsq_addObservers];
-}
+
 
 
 @end

@@ -646,40 +646,43 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     }
 }
 
-- (void)messagesInputToolbar:(JSQMessagesInputToolbar *)toolbar didPressRightBarButton:(UIButton *)sender
-{
-    if (toolbar.sendButtonOnRight) {
-        
-        // Check whether needs to toggle NoteKeyboard if supportNoteKeyboard
-        if (_supportNoteKeyboard && (_jsq_isNoteKeyboard || ![self.inputToolbar.contentView.textView hasText])) {
-            [self toggleNoteKeyboard];
-            if (![self.inputToolbar.contentView.textView hasText]) {
-                UITextView *textView = self.inputToolbar.contentView.textView;
-                textView.text = nil;
-                [textView.undoManager removeAllActions];
-                return;
-            } else {
-                [self didPressSendButton:sender
-                            withNoteText:[self jsq_currentlyComposedMessageText]
-                                senderId:self.senderId
-                       senderDisplayName:@"Note"
-                                    date:[NSDate date]];
-            }
+- (void)messagesInputToolbar:(JSQMessagesInputToolbar *)toolbar
+      didPressRightBarButton:(UIButton *)sender {
+  if (toolbar.sendButtonOnRight) {
+    // Handle case supportNoteKeyboard
+    if (_supportNoteKeyboard) {
+      // Check whether needs to toggle NoteKeyboard
+      if (_jsq_isNoteKeyboard ||
+          ![self.inputToolbar.contentView.textView hasText]) {
+          
+        [self toggleNoteKeyboard];
+        if (![self.inputToolbar.contentView.textView hasText]) {
+          UITextView *textView = self.inputToolbar.contentView.textView;
+          textView.text = nil;
+          [textView.undoManager removeAllActions];
         } else {
-            //  if supportNoteKeyboard true - hide note keyboard
-            if (_supportNoteKeyboard) {
-               [self.inputToolbar.contentView showNoteKeyboard:FALSE];
-            }
-            [self didPressSendButton:sender
-                     withMessageText:[self jsq_currentlyComposedMessageText]
-                            senderId:self.senderId
-                   senderDisplayName:self.senderDisplayName
-                                date:[NSDate date]];
+          [self didPressSendButton:sender
+                      withNoteText:[self jsq_currentlyComposedMessageText]
+                          senderId:self.senderId
+                 senderDisplayName:@"Note"
+                              date:[NSDate date]];
         }
+        return;
+      } else {
+        // Hide note keyboard
+        [self.inputToolbar.contentView showNoteKeyboard:FALSE];
+      }
     }
-    else {
-        [self didPressAccessoryButton:sender];
-    }
+      
+    [self didPressSendButton:sender
+             withMessageText:[self jsq_currentlyComposedMessageText]
+                    senderId:self.senderId
+           senderDisplayName:self.senderDisplayName
+                        date:[NSDate date]];
+
+  } else {
+    [self didPressAccessoryButton:sender];
+  }
 }
 
 - (void)messagesInputToolbar:(JSQMessagesInputToolbar *)toolbar didPressCloseNoteBarButton:(UIButton *)sender
@@ -716,18 +719,15 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
         return;
     }
     UIButton *rightButton;
-    // If support note keyboard
+    // If support note keyboard - decide right side button
     if (_supportNoteKeyboard) {
         if (_jsq_isNoteKeyboard) {
             rightButton = [JSQMessagesToolbarButtonFactory defaultSaveButtonItem];
-            self.inputToolbar.contentView.rightBarButtonContainerViewWidthContraint.constant = 50.0f;
         } else {
             if ([textView hasText]) {
                 rightButton = [JSQMessagesToolbarButtonFactory defaultSendButtonItem];
-                self.inputToolbar.contentView.rightBarButtonContainerViewWidthContraint.constant = 50.0f;
             } else {
                 rightButton = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
-                self.inputToolbar.contentView.rightBarButtonContainerViewWidthContraint.constant = 25.0f;
             }
         }
     } else {

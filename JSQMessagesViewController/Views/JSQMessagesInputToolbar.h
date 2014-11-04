@@ -107,10 +107,6 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesInputToolbarHeightDefault;
 @property (assign, nonatomic) BOOL jsq_supportNoteKeyboard;
 
 /**
- *  Refresh buttons observers
- */
-- (void)refreshObservers;
-/**
  *  Enables or disables the send button based on whether or not its `textView` has text.
  *  That is, the send button will be enabled if there is text in the `textView`, and disabled otherwise.
  */
