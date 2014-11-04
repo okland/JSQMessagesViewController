@@ -343,7 +343,7 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
 - (void)toggleNoteKeyboard {
     _jsq_isNoteKeyboard = !_jsq_isNoteKeyboard;
     if (_jsq_isNoteKeyboard) {
-        self.toolbarHeightConstraint.constant = 70.0f;
+        self.toolbarHeightConstraint.constant = 75.0f;
         self.inputToolbar.backgroundColor = [UIColor purpleColor];
         self.inputToolbar.jsq_isNoteKeyboard = TRUE;
         [self.inputToolbar.contentView showNoteKeyboard:TRUE];
