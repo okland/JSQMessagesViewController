@@ -216,18 +216,19 @@ const CGFloat kJSQMessagesToolbarContentViewHorizontalSpacingDefault = 4.0f;
 - (void)showNoteKeyboard:(BOOL)flag {
     if (flag) {
         _noteMessageLabel.hidden = FALSE;
-        self.textBoxVerticalTopSpaceConstraint.constant = 40.0f;
-        self.leftBarButtonItem.hidden = TRUE;
-        self.leftBarButtonContainerViewWidthConstraint.constant = 0.0f;
+        self.textBoxVerticalTopSpaceConstraint.constant = 38.0f;
+        //self.leftBarButtonItem.hidden = TRUE;
+        //self.leftBarButtonContainerViewWidthConstraint.constant = 0.0f;
         self.textView.placeHolder = NSLocalizedStringFromTable(@"New Note", @"JSQMessages", @"Placeholder text for the note input text view");
         self.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultSaveButtonItem];
         self.closeNoteButtonContainerView.hidden = FALSE;
         self.closeNoteButtonItem.hidden = FALSE;
+        [self.textView becomeFirstResponder];
     } else {
         _noteMessageLabel.hidden = TRUE;
         self.textBoxVerticalTopSpaceConstraint.constant = 7.0f;
-        self.leftBarButtonItem.hidden = FALSE;
-        self.leftBarButtonContainerViewWidthConstraint.constant = 34.0f;
+        // self.leftBarButtonItem.hidden = FALSE;
+        // self.leftBarButtonContainerViewWidthConstraint.constant = 34.0f;
         self.rightBarButtonContainerViewWidthConstraint.constant = 34.0f;
         self.textView.placeHolder = NSLocalizedStringFromTable(@"New Message", @"JSQMessages", @"Placeholder text for the message input text view");
         self.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];

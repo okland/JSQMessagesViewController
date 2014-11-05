@@ -44,11 +44,14 @@
     self.senderId = kJSQDemoAvatarIdSquires;
     self.senderDisplayName = kJSQDemoAvatarDisplayNameSquires;
     self.supportNoteKeyboard = TRUE;
+    
+    // hide left button by default
+    self.inputToolbar.contentView.leftBarButtonItem = nil;
+    
     /**
      *  Load up our fake data for the demo
      */
     self.demoData = [[DemoModelData alloc] init];
-    
     
     /**
      *  You can set custom avatar sizes
