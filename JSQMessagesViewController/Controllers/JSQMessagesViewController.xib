@@ -36,7 +36,7 @@
                     <items/>
                 </toolbar>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VT5-0U-t3c">
-                    <rect key="frame" x="0.0" y="63" width="320" height="24"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="24"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Business is currently offline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FRU-ez-tUp">
                             <rect key="frame" x="90" y="1" width="141" height="21"/>
@@ -61,7 +61,7 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="BoD-Az-3DM" secondAttribute="trailing" id="7xc-Ha-asg"/>
-                <constraint firstItem="VT5-0U-t3c" firstAttribute="top" secondItem="mUa-cS-ru4" secondAttribute="top" constant="63" id="FBE-1w-xVJ"/>
+                <constraint firstItem="VT5-0U-t3c" firstAttribute="top" secondItem="mUa-cS-ru4" secondAttribute="top" id="FBE-1w-xVJ"/>
                 <constraint firstItem="l9u-2b-4LK" firstAttribute="left" secondItem="mUa-cS-ru4" secondAttribute="left" id="MmF-oh-Y75"/>
                 <constraint firstAttribute="right" secondItem="l9u-2b-4LK" secondAttribute="right" id="O9u-TA-A0e"/>
                 <constraint firstAttribute="bottom" secondItem="l9u-2b-4LK" secondAttribute="bottom" id="Re7-WW-UmS"/>
