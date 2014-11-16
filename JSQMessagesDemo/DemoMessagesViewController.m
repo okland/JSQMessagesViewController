@@ -305,7 +305,7 @@
      */
     [JSQSystemSoundPlayer jsq_playMessageSentSound];
     
-    JSQTextMessage *message = [[JSQTextMessage alloc] initWithSenderId:senderId
+    JSQMessage *message = [[JSQMessage alloc] initWithSenderId:senderId
                                                      senderDisplayName:senderDisplayName
                                                                   date:date
                                                                   text:text];
