@@ -173,6 +173,10 @@
  */
 @property (assign, nonatomic) CGFloat topContentAdditionalInset;
 
+/**
+ *  View that represent a message that the business is currently offline
+ */
+@property (strong, nonatomic) IBOutlet UIView *businessIsOfflineView;
 #pragma mark - Class methods
 
 /**

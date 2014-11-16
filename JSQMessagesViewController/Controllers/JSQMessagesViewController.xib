@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JSQMessagesViewController">
             <connections>
                 <outlet property="backgroundImageView" destination="8fB-8f-aBz" id="X6w-ik-8Q5"/>
+                <outlet property="businessIsOfflineView" destination="VT5-0U-t3c" id="IlO-47-caI"/>
                 <outlet property="collectionView" destination="l9u-2b-4LK" id="bLP-6g-CkO"/>
                 <outlet property="inputToolbar" destination="BoD-Az-3DM" id="w74-g9-1qA"/>
                 <outlet property="toolbarBottomLayoutGuide" destination="rHs-6q-NX4" id="d6h-iu-VMX"/>
@@ -34,14 +35,38 @@
                     </constraints>
                     <items/>
                 </toolbar>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VT5-0U-t3c">
+                    <rect key="frame" x="0.0" y="63" width="320" height="24"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Business is currently offline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FRU-ez-tUp">
+                            <rect key="frame" x="90" y="1" width="141" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="141" id="21c-oP-OZB"/>
+                                <constraint firstAttribute="height" constant="21" id="oeO-K4-Xbr"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                            <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="VsF-pG-pUx"/>
+                        <constraint firstAttribute="centerX" secondItem="FRU-ez-tUp" secondAttribute="centerX" constant="-0.5" id="ZiN-jm-kC6"/>
+                        <constraint firstAttribute="width" constant="320" id="buS-mW-2LK"/>
+                        <constraint firstItem="FRU-ez-tUp" firstAttribute="top" secondItem="VT5-0U-t3c" secondAttribute="top" constant="1" id="g0t-px-YBw"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="BoD-Az-3DM" secondAttribute="trailing" id="7xc-Ha-asg"/>
+                <constraint firstItem="VT5-0U-t3c" firstAttribute="top" secondItem="mUa-cS-ru4" secondAttribute="top" constant="63" id="FBE-1w-xVJ"/>
                 <constraint firstItem="l9u-2b-4LK" firstAttribute="left" secondItem="mUa-cS-ru4" secondAttribute="left" id="MmF-oh-Y75"/>
                 <constraint firstAttribute="right" secondItem="l9u-2b-4LK" secondAttribute="right" id="O9u-TA-A0e"/>
                 <constraint firstAttribute="bottom" secondItem="l9u-2b-4LK" secondAttribute="bottom" id="Re7-WW-UmS"/>
                 <constraint firstItem="l9u-2b-4LK" firstAttribute="top" secondItem="mUa-cS-ru4" secondAttribute="top" id="dCQ-DM-Wdj"/>
+                <constraint firstAttribute="centerX" secondItem="VT5-0U-t3c" secondAttribute="centerX" id="kyB-IW-qAA"/>
                 <constraint firstAttribute="bottom" secondItem="BoD-Az-3DM" secondAttribute="bottom" id="rHs-6q-NX4"/>
                 <constraint firstItem="BoD-Az-3DM" firstAttribute="leading" secondItem="mUa-cS-ru4" secondAttribute="leading" id="ts7-8f-0lH"/>
             </constraints>
