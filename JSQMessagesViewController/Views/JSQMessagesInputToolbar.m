@@ -69,6 +69,7 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
     [self jsq_addObservers];
     
     self.contentView.leftBarButtonItem = [JSQMessagesToolbarButtonFactory defaultAccessoryButtonItem];
+    self.contentView.leftBarButtonItem.enabled = TRUE;
     
     if (_jsq_supportNoteKeyboard) {
        self.contentView.rightBarButtonItem = _jsq_isNoteKeyboard ? [JSQMessagesToolbarButtonFactory defaultSaveButtonItem]: [JSQMessagesToolbarButtonFactory defaultNoteButtonItem];
@@ -112,9 +113,6 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
     BOOL hasText = (_jsq_isNoteKeyboard || !_jsq_supportNoteKeyboard) ? [self.contentView.textView hasText] : TRUE;
     if (self.sendButtonOnRight) {
         self.contentView.rightBarButtonItem.enabled = hasText;
-    }
-    else {
-        self.contentView.leftBarButtonItem.enabled = hasText;
     }
 }
 

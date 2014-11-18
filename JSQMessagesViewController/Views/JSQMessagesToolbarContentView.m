@@ -221,6 +221,7 @@ const CGFloat kJSQMessagesToolbarContentViewHorizontalSpacingDefault = 8.0f;
         _noteMessageLabel.hidden = TRUE;
         self.textBoxVerticalTopSpaceConstraint.constant = 7.0f;
         self.leftBarButtonItem.hidden = FALSE;
+        self.leftBarButtonItem.enabled = TRUE;
         self.leftBarButtonContainerViewWidthConstraint.constant = 34.0f;
         self.rightBarButtonContainerViewWidthConstraint.constant = 34.0f;
         self.textView.placeHolder = NSLocalizedStringFromTable(@"New Message", @"JSQMessages", @"Placeholder text for the message input text view");
