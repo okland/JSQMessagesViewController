@@ -48,6 +48,11 @@
     [super setSelectedRange:NSMakeRange(NSNotFound, 0)];
 }
 
+- (void)setText:(NSString *)text {
+    [super setText:text];
+    self.textAlignment = [JSQMessagesCellTextView alignmentForString:text];
+}
+
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     //  ignore double-tap to prevent copy/define/etc. menu from showing
@@ -72,6 +77,26 @@
     }
     
     return YES;
+}
+
++(UITextAlignment)alignmentForString:(NSString *)astring
+{
+    
+    if (astring.length) {
+        
+        NSArray *rightLeftLanguages = @[@"ar",@"he"];
+        
+        NSString *lang = CFBridgingRelease(CFStringTokenizerCopyBestStringLanguage((CFStringRef)astring,CFRangeMake(0,[astring length])));
+        
+        if ([rightLeftLanguages containsObject:lang]) {
+            
+            return UITextAlignmentRight;
+            
+        }
+    }
+    
+    return UITextAlignmentLeft;
+    
 }
 
 @end
