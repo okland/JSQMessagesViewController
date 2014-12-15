@@ -89,14 +89,10 @@
         NSString *lang = CFBridgingRelease(CFStringTokenizerCopyBestStringLanguage((CFStringRef)astring,CFRangeMake(0,[astring length])));
         
         if ([rightLeftLanguages containsObject:lang]) {
-            
             return UITextAlignmentRight;
-            
         }
     }
-    
     return UITextAlignmentLeft;
-    
 }
 
 @end

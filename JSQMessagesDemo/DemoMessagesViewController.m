@@ -46,7 +46,7 @@
     self.supportNoteKeyboard = TRUE;
     
     // hide left button by default
-    // self.inputToolbar.contentView.leftBarButtonItem = nil;
+    self.inputToolbar.contentView.leftBarButtonItem = nil;
     
     /**
      *  Load up our fake data for the demo
